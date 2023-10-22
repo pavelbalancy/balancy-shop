@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adfd512b906634d4784d38a85b06e246, type: 3}
+  m_Name: QualityRibbonConfig
+  m_EditorClassIdentifier: 
+  configs:
+  - Type: 1
+    DisplayText: POPULAR
+    RibbonImage: {fileID: 0}
+  - Type: 2
+    DisplayText: BEST
+    RibbonImage: {fileID: 0}
+  - Type: 3
+    DisplayText: NEW
+    RibbonImage: {fileID: 0}

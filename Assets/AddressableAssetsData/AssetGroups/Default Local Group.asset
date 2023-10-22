@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1ccf0941df87a4e37aff621f8474b4c6
+  m_SerializeEntries:
+  - m_GUID: 98d35c45000664fa5ad46ed7d29f4c65
+    m_Address: BigSlot.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 346ff1a7c4270429f998fa9311455c2a
+    m_Address: SmallSlot.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28554fc966eb749e587c11db562e7eeb
+    m_Address: Frame_Yellow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4594cf46cc344df2bc8dbbdfd0847c0
+    m_Address: Frame_Blue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1149bc1568124c86a752314b78000ab
+    m_Address: Frame_Green
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44a9a5484ba3c4cc895dc425ccaea164
+    m_Address: Frame_Purple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57cd8c76fc08b4964a71f9965666c3b7
+    m_Address: ItemView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8af147fa02a2b449ea4f30c835a7b95e
+    m_Address: ItemViewSmall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bbcba4e267be464998897741b81d508
+    m_Address: Btn_MainButton_Blue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f87d9d25262734d879c2da72faf95bf2
+    m_Address: Btn_MainButton_Dark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23d2f9d15f15a43c5bf2c57de1a27879
+    m_Address: Btn_MainButton_Gray
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb37917483ee24fea8fab306393441e5
+    m_Address: Btn_MainButton_Green
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bc701b63b63f40e0893a9fabeaa0a78
+    m_Address: Btn_MainButton_Orange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86ad28a37b0134b33b88df67b42b7fe0
+    m_Address: Btn_MainButton_Purple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 681db73f19fb24efe843aad713eccb43
+    m_Address: Btn_MainButton_Red
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 362cdbc283a1c43a7abec33080b04398
+    m_Address: Btn_MainButton_Sky
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 535d5068f6e6f4174a907fe1688dc8c1
+    m_Address: Btn_MainButton_White
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 804461bef59b141dba258fc997c8ca15
+    m_Address: Btn_MainButton_Yellow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9250e5acaa63e4dce81d93f22814ac48
+    m_Address: BigSlotWithDescription.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b661157e27b5d47cc9bafb6714e0458e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7e6b4b80a553346a2895537409bfc759, type: 2}
+    - {fileID: 11400000, guid: 3069fa75acf644ec7b66cd8992aa25a3, type: 2}

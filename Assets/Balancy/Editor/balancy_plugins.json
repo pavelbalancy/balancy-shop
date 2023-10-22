@@ -1,0 +1,23 @@
+{
+    "editor": {
+        "url": "https://data.un-cdn.unnyplay.com/config/Packages/balancy_latest.unitypackage",
+        "version": "3.7.2",
+        "min_version": "3.7.1"
+    },
+    "plugins": [
+        {
+            "name": "Balancy",
+            "version": "4.3.17",
+            "description": "Main plugin, mandatory to work",
+            "can_be_removed": false,
+            "download": [
+                {
+                    "url": "https://data.un-cdn.unnyplay.com/config/BalancyLib.dll",
+                    "file": "Plugins/BalancyLib.dll"
+                }
+            ],
+            "dependencies": [],
+            "code": "namespace Balancy\n{\n    public static class Main\n    {\n        public static void Init(AppConfig config)\n        {\n            DataEditor.Init();\n            PrepareOtherPlugins();\n            Controller.Init(config);\n        }\n\n        private static void PrepareOtherPlugins()\n        {\n            {0}\n        }\n    }\n}"
+        }
+    ]
+}

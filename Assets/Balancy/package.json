@@ -1,0 +1,44 @@
+{
+	"name": "co.balancy.unity",
+	"displayName": "Balancy",
+	"version": "2.3.0",
+	"unity": "2018.4",
+	"description": "A better way to Balance your Game.",
+	"keywords": [
+		"game design",
+		"utility",
+		"unity",
+		"balance",
+		"data",
+		"config",
+		"json",
+		"editor",
+		"content",
+		"cloud",
+		"save",
+		"load",
+		"progress",
+		"purchases",
+		"in-app"
+	],
+	"homepage": "https://balancy.co/",
+	"bugs": {
+		"url": "https://github.com/gamebalancy/balancy-unity/issues",
+		"email" : "contact@balancy.co"
+	},
+	"repository": {
+		"type": "git",
+		"url": "ssh://git@github.com:gamebalancy/balancy-unity.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Balancy",
+		"email": "contact@balancy.co",
+		"url": "https://balancy.co/"
+	},
+	"dependencies": {
+		"com.unity.nuget.newtonsoft-json": "3.0.2"
+	},
+	"documentationUrl": "https://en.docs.balancy.dev",
+	"changelogUrl": "https://en.docs.balancy.dev/release_notes.html"
+}
