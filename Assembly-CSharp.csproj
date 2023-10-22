@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets/BalancyShop/Scripts/BuyButton.cs" />
+     <Compile Include="Assets/BalancyShop/Scripts/PageViewOffers.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/TakeSizeFromContent.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/SlotView.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/Launcher.cs" />
@@ -77,8 +78,10 @@
      <Folder Include="Assets/AddressableAssetsData/AssetGroups" />
      <Folder Include="Assets/BalancyShop" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader" />
+     <Folder Include="Assets/BalancyShop/Pack/Popup" />
      <Folder Include="Assets/TextMesh Pro" />
      <Folder Include="Assets/BalancyShop/Pack/UIParticle" />
+     <Folder Include="Assets/BalancyShop/Pack/Label" />
      <Folder Include="Assets/AddressableAssetsData/AssetGroupTemplates" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader" />
      <None Include="Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt" />

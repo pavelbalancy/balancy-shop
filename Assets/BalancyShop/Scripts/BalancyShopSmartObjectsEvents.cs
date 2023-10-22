@@ -12,6 +12,8 @@ namespace Balancy
     public class BalancyShopSmartObjectsEvents : ISmartObjectsEvents
     {
         public static event Action onSmartObjectsInitializedEvent;
+        public static event Action<OfferInfo> onOfferActivated;
+        public static event Action<OfferInfo> onOfferDeactivated;
         
         public void OnSystemProfileConflictAppeared()
         {
@@ -24,6 +26,7 @@ namespace Balancy
         public void OnNewOfferActivated(OfferInfo offerInfo)
         {
             Debug.Log("=> OnNewOfferActivated: " + offerInfo?.GameOffer?.Name + " ; Price = " + offerInfo?.PriceUSD + " ; Discount = " + offerInfo?.Discount);
+            onOfferActivated?.Invoke(offerInfo);
         }
 
         public void OnNewOfferGroupActivated(OfferGroupInfo offerInfo)
@@ -34,6 +37,7 @@ namespace Balancy
         public void OnOfferDeactivated(OfferInfo offerInfo, bool wasPurchased)
         {
             Debug.Log("=> OnOfferDeactivated: " + offerInfo?.GameOffer?.Name + " ; wasPurchased = " + wasPurchased);
+            onOfferDeactivated?.Invoke(offerInfo);
         }
 
         public void OnOfferGroupDeactivated(OfferGroupInfo offerInfo, bool wasPurchased)

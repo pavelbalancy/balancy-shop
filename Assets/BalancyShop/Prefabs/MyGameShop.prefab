@@ -513,6 +513,7 @@ MonoBehaviour:
   header: {fileID: 7056969876550727146}
   content: {fileID: 7056969876551854884}
   pagePrefab: {fileID: 6912776449394944748, guid: ec7be1b84d69a40268a2cfdb1f762644, type: 3}
+  pageOffersPrefab: {fileID: 6912776449394944748, guid: 9d5c7e0bbb58f4251a200e2b65f3376b, type: 3}
 --- !u!1 &7056969877268682572
 GameObject:
   m_ObjectHideFlags: 0

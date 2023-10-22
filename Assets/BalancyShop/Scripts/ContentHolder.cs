@@ -26,12 +26,25 @@ namespace BalancyShop
         {
             var row = GetActiveRowInfo(prefab);
             var newItem = Instantiate(prefab, row.Transform);
-            row.TakeSizeFromContent.SetContent(newItem.transform as RectTransform);
+            row.TakeSizeFromContent?.SetContent(newItem.transform as RectTransform);
             return newItem.GetComponent<T>();
         }
 
         private RowInfo GetActiveRowInfo(GameObject nextPrefab)
         {
+            if (element == null)
+            {
+                if (children.Count == 0)
+                {
+                    children.Add(new RowInfo
+                    {
+                        Transform = transform as RectTransform
+                    });
+                }
+
+                return children[0];
+            }
+
             if (children.Count != 0)
             {
                 var lastRow = children[children.Count - 1];

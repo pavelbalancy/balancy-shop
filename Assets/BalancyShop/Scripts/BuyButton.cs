@@ -2,6 +2,7 @@ using System;
 using Balancy;
 using Balancy.Addressables;
 using Balancy.API.Payments;
+using Balancy.Data.SmartObjects;
 using Balancy.Models.BalancyShop;
 using Balancy.Models.LiveOps.Store;
 using Balancy.Models.SmartObjects;
@@ -13,6 +14,164 @@ namespace BalancyShop
 {
     public class BuyButton : MonoBehaviour
     {
+        private interface IBuyButton
+        {
+            void TryToBuy();
+            StoreItem GetStoreItem();
+            bool IsAvailable();
+            UIStoreItem GetUIData();
+        }
+
+        private class BuyButtonStoreSlot : IBuyButton
+        {
+            private readonly Slot _slot;
+
+            public BuyButtonStoreSlot(Slot slot)
+            {
+                _slot = slot;
+            }
+            
+            public void TryToBuy()
+            {
+                var storeItem = _slot.GetStoreItem();
+                if (storeItem.IsFree())
+                {
+                    Balancy.LiveOps.Store.ItemWasPurchased(storeItem, null);
+                }
+                else
+                {
+                    switch (storeItem.Price.Type)
+                    {
+                        case PriceType.Hard:
+                            //TODO write your payment logic here and then invoke the following method:
+                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, new PaymentInfo
+                            {
+                                Currency = "USD",
+                                Price = storeItem.Price.Product.Price,
+                                ProductId = storeItem.Price.Product.ProductId
+                            }, response =>
+                            {
+                                Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
+                                //TODO give resources from Reward
+                            });
+                            break;
+                        case PriceType.Soft:
+                            //TODO Try to take soft resources from Price
+                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, storeItem.Price);
+                            //TODO give resources from Reward
+                            break;
+                        case PriceType.Ads:
+                            if (storeItem.IsEnoughResources())
+                            {
+                                Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
+                                    response =>
+                                    {
+                                        Debug.Log("Store item was purchased for Ads: " + response.Success);
+                                    });
+                            }
+                            else
+                            {
+                                LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
+                            }
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+
+            public StoreItem GetStoreItem()
+            {
+                return _slot.GetStoreItem();
+            }
+
+            public bool IsAvailable()
+            {
+                return _slot.IsAvailable();
+            }
+
+            public UIStoreItem GetUIData()
+            {
+                return (_slot as MyCustomSlot)?.UIData;
+            }
+        }
+        
+        private class BuyButtonOffer : IBuyButton
+        {
+            private readonly OfferInfo _offerInfo;
+
+            public BuyButtonOffer(OfferInfo offerInfo)
+            {
+                _offerInfo = offerInfo;
+            }
+            
+            public void TryToBuy()
+            {
+                var storeItem = _offerInfo.GameOffer.StoreItem;
+                if (storeItem.IsFree())
+                {
+                    Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, null);
+                }
+                else
+                {
+                    switch (storeItem.Price.Type)
+                    {
+                        case PriceType.Hard:
+                            //TODO write your payment logic here and then invoke the following method:
+                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, new PaymentInfo
+                            {
+                                Currency = "USD",
+                                Price = storeItem.Price.Product.Price,
+                                ProductId = storeItem.Price.Product.ProductId
+                            }, response =>
+                            {
+                                Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
+                                //TODO give resources from Reward
+                            });
+                            break;
+                        case PriceType.Soft:
+                            //TODO Try to take soft resources from Price
+                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, storeItem.Price);
+                            //TODO give resources from Reward
+                            break;
+                        case PriceType.Ads:
+                            if (storeItem.IsEnoughResources())
+                            {
+                                Balancy.LiveOps.GameOffers.PurchaseOffer(_offerInfo,
+                                    response =>
+                                    {
+                                        Debug.Log("Store item was purchased for Ads: " + response.Success);
+                                    });
+                            }
+                            else
+                            {
+                                LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
+                            }
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+
+            public StoreItem GetStoreItem()
+            {
+                return _offerInfo.GameOffer.StoreItem;
+            }
+
+            public bool IsAvailable()
+            {
+                return true;
+            }
+
+            public UIStoreItem GetUIData()
+            {
+                return (_offerInfo.GameOffer as MyOffer)?.UIStoreSlotData;
+            }
+        }
+        
         [SerializeField] private Button buyButton;
         [SerializeField] private Image buyIcon;
         [SerializeField] private TMP_Text buyText;
@@ -21,12 +180,18 @@ namespace BalancyShop
         
         [SerializeField] private Sprite watchAdIcon;
         
-        private Slot _slot;
+        private IBuyButton _buyButtonLogic;
         
         public void Init(Slot slot)
         {
-            _slot = slot;
-            ApplyBuyButton(slot.GetStoreItem());
+            _buyButtonLogic = new BuyButtonStoreSlot(slot);
+            Refresh();
+        }
+        
+        public void Init(OfferInfo offerInfo)
+        {
+            _buyButtonLogic = new BuyButtonOffer(offerInfo);
+            Refresh();
         }
         
         private void Start()
@@ -36,56 +201,13 @@ namespace BalancyShop
 
         private void TryToBuy()
         {
-            var storeItem = _slot.GetStoreItem();
-            if (storeItem.IsFree())
-            {
-                Balancy.LiveOps.Store.ItemWasPurchased(storeItem, null);
-            }
-            else
-            {
-                switch (storeItem.Price.Type)
-                {
-                    case PriceType.Hard:
-                        //TODO write your payment logic here and then invoke the following method:
-                        Balancy.LiveOps.Store.ItemWasPurchased(storeItem, new PaymentInfo
-                        {
-                            Currency = "USD",
-                            Price = storeItem.Price.Product.Price,
-                            ProductId = storeItem.Price.Product.ProductId
-                        }, response =>
-                        {
-                            Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
-                            //TODO give resources from Reward
-                        });
-                        break;
-                    case PriceType.Soft:
-                        //TODO Try to take soft resources from Price
-                        Balancy.LiveOps.Store.ItemWasPurchased(storeItem, storeItem.Price);
-                        //TODO give resources from Reward
-                        break;
-                    case PriceType.Ads:
-                        if (storeItem.IsEnoughResources())
-                        {
-                            Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
-                                response => { Debug.Log("Store item was purchased for Ads: " + response.Success); });
-                        }
-                        else
-                        {
-                            LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            ApplyBuyButton(storeItem);
+            _buyButtonLogic.TryToBuy();
+            Refresh();
         }
 
         public void Refresh()
         {
-            ApplyBuyButton(_slot.GetStoreItem());
+            ApplyBuyButton(_buyButtonLogic.GetStoreItem());
         }
         
         private void ApplyBuyButton(StoreItem storeItem)
@@ -140,38 +262,36 @@ namespace BalancyShop
             }
 
             bool showHint = false;
-            switch (_slot)
-            {
-                case SlotPeriod slotPeriod:
-                {
-                    buyTextString += $" ({slotPeriod.GetPurchasesDoneCount()}/{slotPeriod.Limit})";
-                    buyHintText.SetText($"Resets in {slotPeriod.GetSecondsUntilReset()}");//TODO fix
-                    showHint = true;
-                    break;
-                }
-                case SlotCooldown slotCooldown:
-                {
-                    if (slotCooldown.IsAvailable())
-                        buyHintText.SetText($"CD {slotCooldown.Cooldown}");
-                    else
-                        buyHintText.SetText($"Resets in {slotCooldown.GetSecondsLeftUntilAvailable()}");
-                    showHint = true;
-                    break;
-                }
-            }
+            // switch (_slot)
+            // {
+            //     case SlotPeriod slotPeriod:
+            //     {
+            //         buyTextString += $" ({slotPeriod.GetPurchasesDoneCount()}/{slotPeriod.Limit})";
+            //         buyHintText.SetText($"Resets in {slotPeriod.GetSecondsUntilReset()}");//TODO fix
+            //         showHint = true;
+            //         break;
+            //     }
+            //     case SlotCooldown slotCooldown:
+            //     {
+            //         if (slotCooldown.IsAvailable())
+            //             buyHintText.SetText($"CD {slotCooldown.Cooldown}");
+            //         else
+            //             buyHintText.SetText($"Resets in {slotCooldown.GetSecondsLeftUntilAvailable()}");
+            //         showHint = true;
+            //         break;
+            //     }
+            // }
             
             buyText?.SetText(buyTextString);
             buyHintText?.gameObject.SetActive(showHint);
             if (buyButton != null)
-                buyButton.interactable = _slot.IsAvailable();
+                buyButton.interactable = _buyButtonLogic.IsAvailable();
 
-            if (_slot is MyCustomSlot myCustomSlot && buyButtonBack != null)
+            if (buyButtonBack != null)
             {
-                UIStoreItem uiStoreItem = myCustomSlot.UIData;
-                AssetsLoader.GetSprite(uiStoreItem.Button, btnSprite =>
-                {
-                    buyButtonBack.sprite = btnSprite;
-                });
+                UIStoreItem uiStoreItem = _buyButtonLogic.GetUIData();
+                if (uiStoreItem?.Button != null)
+                    AssetsLoader.GetSprite(uiStoreItem.Button, btnSprite => { buyButtonBack.sprite = btnSprite; });
             }
         }
     }

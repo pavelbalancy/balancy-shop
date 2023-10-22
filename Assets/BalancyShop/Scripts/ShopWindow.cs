@@ -1,4 +1,3 @@
-using Balancy;
 using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using TMPro;
@@ -12,6 +11,7 @@ namespace BalancyShop
         [SerializeField] private RectTransform content;
         
         [SerializeField] private GameObject pagePrefab;
+        [SerializeField] private GameObject pageOffersPrefab;
 
         private GameStoreBase _smartConfig;
 
@@ -45,14 +45,22 @@ namespace BalancyShop
             
             content.RemoveChildren();
 
+            AddOffersSection();
+            
             var pages = smartConfig.ActivePages;
-        
             foreach (var page in pages)
             {
                 var newButton = Instantiate(pagePrefab, content);
                 var storeTabButton = newButton.GetComponent<PageView>();
                 storeTabButton.Init(smartConfig, page);
             }
+        }
+
+        private void AddOffersSection()
+        {
+            var newButton = Instantiate(pageOffersPrefab, content);
+            var storeTabButton = newButton.GetComponent<PageViewOffers>();
+            storeTabButton.Init();
         }
     }
 }

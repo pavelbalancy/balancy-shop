@@ -46,12 +46,14 @@ namespace Balancy
 		{
 			public static List<Models.BalancyShop.MyItem> MyItems { get; private set; }
 			public static List<Models.BalancyShop.UIStoreItem> UIStoreItems { get; private set; }
+			public static List<Models.BalancyShop.MyOffer> MyOffers { get; private set; }
 			public static List<Models.BalancyShop.MyStoreItem> MyStoreItems { get; private set; }
 
 			public static void Init()
 			{
 				MyItems = DataManager.ParseList<Models.BalancyShop.MyItem>();
 				UIStoreItems = DataManager.ParseList<Models.BalancyShop.UIStoreItem>();
+				MyOffers = DataManager.ParseList<Models.BalancyShop.MyOffer>();
 				MyStoreItems = DataManager.ParseList<Models.BalancyShop.MyStoreItem>();
 			}
 		}

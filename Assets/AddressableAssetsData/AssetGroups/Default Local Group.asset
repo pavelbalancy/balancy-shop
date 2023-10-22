@@ -112,6 +112,46 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5931a765ea31941c692754e88d36121f
+    m_Address: Label_TitleRibbon_Blue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f004328d7c9547edae34787869f3e8a
+    m_Address: Label_TitleRibbon_Green
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03a52e934f88f4a699b498a51573c186
+    m_Address: Label_TitleRibbon_Yellow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2323358c16953446e9b2cb27fde07104
+    m_Address: Label_TitleRibbon_Orange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb3db5b0868bc4f348e3d3a1dfbf32a8
+    m_Address: Popup_Frame01_Navy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2feaafe4e67104e6fbd6232e8f31f297
+    m_Address: Popup_Frame01_Purple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19a88f73ad3cf45cea5c05eade27d8cd
+    m_Address: ItemViewVerySmall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf08d4065a2514f6f8421f8fe8272433
+    m_Address: OfferSlot.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b661157e27b5d47cc9bafb6714e0458e, type: 2}
   m_SchemaSet:

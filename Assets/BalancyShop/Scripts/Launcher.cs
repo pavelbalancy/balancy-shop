@@ -16,7 +16,6 @@ namespace BalancyShop
         private void Start()
         {
             ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
-            BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent += InitStore;
 
             Balancy.Main.Init(new AppConfig
             {
@@ -55,12 +54,6 @@ namespace BalancyShop
                     winStore.Init(LiveOps.Store.DefaultStore);
                 }
             });
-        }
-
-        private void InitStore()
-        {
-            BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent -= InitStore;
-            
         }
         
         Constants.Environment GetEnvironment()

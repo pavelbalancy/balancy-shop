@@ -1,6 +1,7 @@
 using System;
 using Balancy;
 using Balancy.Addressables;
+using Balancy.Data.SmartObjects;
 using Balancy.Example;
 using Balancy.Models.BalancyShop;
 using Balancy.Models.LiveOps.Store;
@@ -34,26 +35,58 @@ namespace BalancyShop
         [SerializeField] private Image background;
         [SerializeField] private ContentHolder rewardContent;
         [SerializeField] private GameObject defaultItemView;
+        [SerializeField] private TMP_Text timer;
 
-        private Slot _slot;
+        private StoreItem _storeItem;
+        private UIStoreItem _uiStoreItem;
+        private bool _needToSubscribe;
         private bool _subscribed;
+
+        private Func<int> onGetTimeLeft;
 
         public void Init(Slot slot)
         {
-            _slot = slot;
-            ApplyBackground(slot);
-            ApplyMainInfo(slot.GetStoreItem());
+            _needToSubscribe = NeedToSubscribe(slot);
+            Init(slot.GetStoreItem(), (slot as MyCustomSlot)?.UIData);
             ApplyRibbon(slot);
             buyButton.Init(slot);
-            ShowReward();
+        }
+        
+        private bool NeedToSubscribe(Slot slot)
+        {
+            switch (slot)
+            {
+                case SlotPeriod _:
+                case SlotCooldown _:
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void Init(OfferInfo offerInfo)
+        {
+            _needToSubscribe = true;
+            Init(offerInfo.GameOffer.StoreItem, (offerInfo.GameOffer as MyOffer)?.UIStoreSlotData);
+            buyButton.Init(offerInfo);
+            onGetTimeLeft = offerInfo.GetSecondsLeftBeforeDeactivation;
+        }
+
+        private void Init(StoreItem storeItem, UIStoreItem uiStoreItem)
+        {
+            _storeItem = storeItem;
+            _uiStoreItem = uiStoreItem;
+            ApplyBackground(_uiStoreItem);
+            ApplyMainInfo(_storeItem);
+            ShowReward(storeItem, uiStoreItem);
             SubscribeForTimers();
         }
 
-        private void ApplyBackground(Slot slot)
+        private void ApplyBackground(UIStoreItem uiStoreItem)
         {
-            if (slot is MyCustomSlot myCustomSlot)
+            if (uiStoreItem != null)
             {
-                AssetsLoader.GetSprite(myCustomSlot.UIData.Background, sprite =>
+                AssetsLoader.GetSprite(uiStoreItem.Background, sprite =>
                 {
                     background.sprite = sprite;
                 });
@@ -62,19 +95,11 @@ namespace BalancyShop
 
         private void SubscribeForTimers()
         {
-            if (_subscribed || _slot == null)
+            if (_subscribed || !_needToSubscribe)
                 return;
-            
-            switch (_slot)
-            {
-                case SlotPeriod _:
-                case SlotCooldown _:
-                {
-                    _subscribed = true;
-                    BalancyTimer.SubscribeForTimer(REFRESH_RATE, Refresh);
-                    break;
-                } 
-            }
+
+            _subscribed = true;
+            BalancyTimer.SubscribeForTimer(REFRESH_RATE, Refresh);
         }
 
         private void UnsubscribeFromTimers()
@@ -89,6 +114,9 @@ namespace BalancyShop
         private void Refresh()
         {
             buyButton.Refresh();
+
+            if (timer != null && onGetTimeLeft != null)
+                timer.text = $"{onGetTimeLeft()} s";
         }
 
         private void OnEnable()
@@ -154,20 +182,20 @@ namespace BalancyShop
             }
         }
 
-        private void ShowReward()
+        private void ShowReward(StoreItem storeItem, UIStoreItem uiStoreItem)
         {
             if (rewardContent == null)
                 return;
             
             rewardContent.CleanUp();
             
-            PreloadPrefabs(() =>
+            PreloadPrefabs(uiStoreItem, () =>
             {
-                var reward = _slot.GetStoreItem().Reward;
+                var reward = storeItem.Reward;
                 for (var i = 0; i < reward.Items.Length; i++)
                 {
                     var itemWithAmount = reward.Items[i];
-                    var uiItem = GetItemInfo(i);
+                    var uiItem = GetItemInfo(uiStoreItem, i);
 
                     void PrepareItemView(Object prefab)
                     {
@@ -190,10 +218,8 @@ namespace BalancyShop
             });
         }
 
-        private UIItem GetItemInfo(int index)
+        private UIItem GetItemInfo(UIStoreItem uiStoreItem, int index)
         {
-            UIStoreItem uiStoreItem = (_slot as MyCustomSlot)?.UIData;
-
             if (uiStoreItem == null || uiStoreItem.Content.Length == 0)
                 return null;
 
@@ -202,10 +228,8 @@ namespace BalancyShop
             return uiStoreItem.Content[index];
         }
 
-        private void PreloadPrefabs(Action callback)
+        private void PreloadPrefabs(UIStoreItem uiStoreItem, Action callback)
         {
-            UIStoreItem uiStoreItem = (_slot as MyCustomSlot)?.UIData;
-            
             if (uiStoreItem == null)
             {
                 callback?.Invoke();

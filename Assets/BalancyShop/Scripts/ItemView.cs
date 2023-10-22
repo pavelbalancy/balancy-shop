@@ -21,7 +21,7 @@ namespace BalancyShop
 
         private void ApplyIcon(ItemWithAmount itemWithAmount, UIItem overrideInfo)
         {
-            if (overrideInfo.Icon != null)
+            if (overrideInfo?.Icon != null)
             {
                 overrideInfo.Icon.LoadSprite(sprite => { icon.sprite = sprite; });
             }
@@ -33,13 +33,13 @@ namespace BalancyShop
         
         private void ApplyBackground(UIItem overrideInfo)
         {
-            overrideInfo.Background?.LoadSprite(sprite => { background.sprite = sprite; });
+            overrideInfo?.Background?.LoadSprite(sprite => { background.sprite = sprite; });
         }
 
         private void ApplyText(ItemWithAmount itemWithAmount, UIItem overrideInfo)
         {
-            if (overrideInfo.Text.HasValue)
-                text.SetText(overrideInfo.Text.Value);
+            if (overrideInfo?.Text.HasValue ?? false)
+                text.SetText(string.Format(overrideInfo.Text.Value, itemWithAmount.Count));
             else
                 text.SetText(itemWithAmount.Count.ToString());
         }
