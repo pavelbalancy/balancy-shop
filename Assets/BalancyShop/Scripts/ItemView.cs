@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace BalancyShop
 {
-    public class BalancyShopItemView : MonoBehaviour
+    public class ItemView : MonoBehaviour
     {
         [SerializeField] private Image background;
         [SerializeField] private TMP_Text text;

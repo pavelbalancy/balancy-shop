@@ -1,6 +1,7 @@
 using System;
 using Balancy;
 using Balancy.Example;
+using Balancy.Models.BalancyShop;
 using UnityEngine;
 
 namespace BalancyShop
@@ -10,10 +11,13 @@ namespace BalancyShop
         [SerializeField] private string apiGameId;
         [SerializeField] private string publicKey;
         
-        [SerializeField] private BalancyShopWindow winStore;
+        [SerializeField] private ShopWindow winStore;
         
         private void Start()
         {
+            ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
+            BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent += InitStore;
+
             Balancy.Main.Init(new AppConfig
             {
                 ApiGameId = apiGameId,
@@ -43,16 +47,22 @@ namespace BalancyShop
                 OnContentUpdateCallback = updateResponse =>
                 {
                     Debug.Log("Content Updated " + updateResponse.AffectedDictionaries.Length);
+                    winStore.Refresh(LiveOps.Store.DefaultStore);
                 },
                 OnReadyCallback = response =>
                 {
                     Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion}");
-                    
                     winStore.Init(LiveOps.Store.DefaultStore);
                 }
             });
         }
 
+        private void InitStore()
+        {
+            BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent -= InitStore;
+            
+        }
+        
         Constants.Environment GetEnvironment()
         {
 #if GAME_SERVER

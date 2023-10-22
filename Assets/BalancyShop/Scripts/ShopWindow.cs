@@ -1,4 +1,4 @@
-using System;
+using Balancy;
 using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using TMPro;
@@ -6,23 +6,26 @@ using UnityEngine;
 
 namespace BalancyShop
 {
-    public class BalancyShopWindow : MonoBehaviour
+    public class ShopWindow : MonoBehaviour
     {
         [SerializeField] private TMP_Text header;
         [SerializeField] private RectTransform content;
         
         [SerializeField] private GameObject pagePrefab;
 
-        private SmartConfig _smartConfig;
+        private GameStoreBase _smartConfig;
 
         public void Init(SmartConfig smartConfig)
         {
-            _smartConfig = smartConfig;
-            _smartConfig.OnStoreUpdatedEvent += Refresh;
-            Refresh(_smartConfig);
+            Refresh(smartConfig);
         }
 
         private void OnDestroy()
+        {
+            CleanUp();
+        }
+
+        private void CleanUp()
         {
             if (_smartConfig != null)
             {
@@ -31,8 +34,15 @@ namespace BalancyShop
             }
         }
 
-        private void Refresh(GameStoreBase smartConfig)
+        public void Refresh(GameStoreBase smartConfig)
         {
+            if (_smartConfig != smartConfig)
+            {
+                CleanUp();
+                _smartConfig = smartConfig;
+                _smartConfig.OnStoreUpdatedEvent += Refresh;
+            }
+            
             content.RemoveChildren();
 
             var pages = smartConfig.ActivePages;
@@ -40,7 +50,7 @@ namespace BalancyShop
             foreach (var page in pages)
             {
                 var newButton = Instantiate(pagePrefab, content);
-                var storeTabButton = newButton.GetComponent<BalancyShopPageView>();
+                var storeTabButton = newButton.GetComponent<PageView>();
                 storeTabButton.Init(smartConfig, page);
             }
         }

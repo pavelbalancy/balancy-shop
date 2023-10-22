@@ -12,7 +12,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{70bebfeb-c34c-eda7-39c7-3f4d82ab20ce}</ProjectGuid>
+    <ProjectGuid>{5ca310c1-b790-1229-6f8a-122664370682}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -307,40 +307,40 @@
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.11f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.YamlDotNet">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Collections.LowLevel.ILSupport">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.collections@1.2.4/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.collections@1.2.4/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Plastic.Antlr3.Runtime">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Plastic.Newtonsoft.Json">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="log4netPlastic">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.IonicZip">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.visualscripting@1.9.1/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualScripting.TextureAssets">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/EditorAssetResources/Unity.VisualScripting.TextureAssets.dll</HintPath>
-     </Reference>
-     <Reference Include="unityplastic">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
-     </Reference>
-     <Reference Include="BalancyLib">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Assets/Balancy/Plugins/BalancyLib.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.visualscripting@1.9.1/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
      </Reference>
      <Reference Include="Newtonsoft.Json">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.2.1/Runtime/Newtonsoft.Json.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.2.1/Runtime/Newtonsoft.Json.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.VisualScripting.TextureAssets">
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.visualscripting@1.9.1/Editor/VisualScripting.Core/EditorAssetResources/Unity.VisualScripting.TextureAssets.dll</HintPath>
+     </Reference>
+     <Reference Include="unityplastic">
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.collab-proxy@2.1.0/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
+     </Reference>
+     <Reference Include="BalancyLib">
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Assets/Balancy/Plugins/BalancyLib.dll</HintPath>
      </Reference>
      <Reference Include="nunit.framework">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
      </Reference>
      <Reference Include="mscorlib">
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.11f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/mscorlib.dll</HintPath>
@@ -718,35 +718,35 @@
      <HintPath>/Applications/Unity/Hub/Editor/2022.3.11f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/Facades/netstandard.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Addressables.Editor">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Addressables">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.UI">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.UI">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.TestRunner">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.TestRunner">
-     <HintPath>/Volumes/PavelData/Projects/Demo/BalancyShop/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+     <HintPath>/Volumes/PavelData/Projects/balancy-shop/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Balancy.csproj">
-      <Project>{4e04a7f8-7963-bc6c-eea4-d35758f8dad9}</Project>
+      <Project>{8b69344d-0579-b7d7-96ca-c67e412abb1c}</Project>
       <Name>Balancy</Name>
     </ProjectReference>
     <ProjectReference Include="Balancy.Editor.csproj">
-      <Project>{36f9aa03-a75f-688b-de6f-78d7c8844f9b}</Project>
+      <Project>{45f450f3-f558-a6df-dde1-518af63e1e9e}</Project>
       <Name>Balancy.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Addressables.Balancy.csproj">
-      <Project>{3eb81035-adfa-3fe7-cd66-b98a9b6be1e6}</Project>
+      <Project>{d8c267c5-22fd-3c0d-4349-5615f2ea6ca1}</Project>
       <Name>Addressables.Balancy</Name>
     </ProjectReference>
   </ItemGroup>

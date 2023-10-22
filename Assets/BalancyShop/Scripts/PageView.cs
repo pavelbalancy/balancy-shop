@@ -1,14 +1,15 @@
 using System;
 using Balancy.Addressables;
 using Balancy.Models.BalancyShop;
-using Balancy.Models.LiveOps.Store;
 using Balancy.Models.SmartObjects;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using Page = Balancy.Models.LiveOps.Store.Page;
 
 namespace BalancyShop
 {
-    public class BalancyShopPageView : MonoBehaviour
+    public class PageView : MonoBehaviour
     {
         [SerializeField] private TMP_Text header;
         [SerializeField] private ContentHolder content;
@@ -46,13 +47,16 @@ namespace BalancyShop
                         var ui = myCustomSlot.UIData;
                         AssetsLoader.GetObject(ui.Asset.Name, prefab =>
                         {
-                            var storeItemView = content.AddElement<BalancyShopSlotView>(prefab as GameObject);
+                            if (content == null || UnityObjectUtility.IsDestroyed(content))
+                                return;
+                            
+                            var storeItemView = content.AddElement<SlotView>(prefab as GameObject);
                             storeItemView.Init(storeSlot);
                         });
                     }
                     else
                     {
-                        var storeItemView = content.AddElement<BalancyShopSlotView>(slotPrefab);
+                        var storeItemView = content.AddElement<SlotView>(slotPrefab);
                         storeItemView.Init(storeSlot);
                     }
                 }
