@@ -28,12 +28,12 @@ namespace BalancyShop
 
         private void OnOfferActivated(OfferInfo offerInfo)
         {
-            throw new NotImplementedException();
+            Refresh();
         }
 
         private void OnOfferDeactivated(OfferInfo offerInfo)
         {
-            throw new NotImplementedException();
+            Refresh();
         }
 
         private void OnDestroy()
