@@ -5591,7 +5591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 28554fc966eb749e587c11db562e7eeb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4594cf46cc344df2bc8dbbdfd0847c0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5627,6 +5627,7 @@ MonoBehaviour:
   background: {fileID: 8217037951890795891}
   rewardContent: {fileID: 2527138870624697684}
   defaultItemView: {fileID: 8284483175747250379, guid: 57cd8c76fc08b4964a71f9965666c3b7, type: 3}
+  timer: {fileID: 0}
 --- !u!1001 &7767877268393858861
 PrefabInstance:
   m_ObjectHideFlags: 0

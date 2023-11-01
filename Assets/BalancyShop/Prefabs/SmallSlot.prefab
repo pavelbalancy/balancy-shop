@@ -10322,7 +10322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 28554fc966eb749e587c11db562e7eeb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4594cf46cc344df2bc8dbbdfd0847c0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10358,6 +10358,7 @@ MonoBehaviour:
   background: {fileID: 8217037951890795891}
   rewardContent: {fileID: 0}
   defaultItemView: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!1001 &5303446931363196032
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10428,7 +10429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4292326930181446572, guid: 2d04925afb5e74725991ccf4df23bb61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4292326930181446572, guid: 2d04925afb5e74725991ccf4df23bb61, type: 3}
       propertyPath: m_AnchoredPosition.y

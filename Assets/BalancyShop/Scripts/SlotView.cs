@@ -86,7 +86,7 @@ namespace BalancyShop
         {
             if (uiStoreItem != null)
             {
-                AssetsLoader.GetSprite(uiStoreItem.Background, sprite =>
+                uiStoreItem.Background.LoadSprite(sprite =>
                 {
                     background.sprite = sprite;
                 });

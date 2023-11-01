@@ -14,7 +14,7 @@ namespace Balancy.Models.BalancyShop
 		public readonly Models.BalancyShop.UIItem[] Content;
 
 		[JsonProperty("background")]
-		public readonly UnnyAsset Background;
+		public readonly UnnyObject Background;
 
 		[JsonProperty("name")]
 		public readonly string Name;
@@ -22,8 +22,11 @@ namespace Balancy.Models.BalancyShop
 		[JsonProperty("asset")]
 		public readonly UnnyAsset Asset;
 
+		[JsonProperty("button2")]
+		public readonly UnnyAsset Button2;
+
 		[JsonProperty("button")]
-		public readonly UnnyAsset Button;
+		public readonly UnnyObject Button;
 
 	}
 #pragma warning restore 649

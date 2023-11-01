@@ -47,6 +47,13 @@ namespace BalancyShop
             content.CleanUp();
 
             var allOffers = LiveOps.GameOffers.GetActiveOffers();
+
+            if (allOffers.Length == 0)
+            {
+                gameObject.SetActive(false);
+                return;
+            } else
+                gameObject.SetActive(true);
             
             PreloadPrefabs(allOffers, () =>
             {

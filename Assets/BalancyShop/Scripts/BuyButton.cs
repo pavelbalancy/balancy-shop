@@ -291,7 +291,7 @@ namespace BalancyShop
             {
                 UIStoreItem uiStoreItem = _buyButtonLogic.GetUIData();
                 if (uiStoreItem?.Button != null)
-                    AssetsLoader.GetSprite(uiStoreItem.Button, btnSprite => { buyButtonBack.sprite = btnSprite; });
+                    uiStoreItem.Button.LoadSprite(btnSprite => { buyButtonBack.sprite = btnSprite; });
             }
         }
     }
