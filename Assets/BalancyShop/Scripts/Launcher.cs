@@ -10,13 +10,14 @@ namespace BalancyShop
     {
         [SerializeField] private string apiGameId;
         [SerializeField] private string publicKey;
-        
-        [SerializeField] private ShopWindow winStore;
+
+        [SerializeField] private DemoUI canvasDemo;
         
         private void Start()
         {
             ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
 
+            canvasDemo.Init();
             Balancy.Main.Init(new AppConfig
             {
                 ApiGameId = apiGameId,
@@ -46,12 +47,12 @@ namespace BalancyShop
                 OnContentUpdateCallback = updateResponse =>
                 {
                     Debug.Log("Content Updated " + updateResponse.AffectedDictionaries.Length);
-                    winStore.Refresh(LiveOps.Store.DefaultStore);
+                    canvasDemo.Refresh();
                 },
                 OnReadyCallback = response =>
                 {
                     Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion}");
-                    winStore.Init(LiveOps.Store.DefaultStore);
+                    canvasDemo.Refresh();
                 }
             });
         }

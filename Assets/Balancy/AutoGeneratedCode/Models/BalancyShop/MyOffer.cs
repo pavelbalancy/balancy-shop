@@ -15,6 +15,9 @@ namespace Balancy.Models.BalancyShop
 		[JsonIgnore]
 		public Models.BalancyShop.UIStoreItem UIStoreSlotData => DataEditor.GetModelByUnnyId<Models.BalancyShop.UIStoreItem>(unnyIdUIStoreSlotData);
 
+		[JsonProperty("badge")]
+		public readonly Models.LiveOps.Store.SlotType Badge;
+
 	}
 #pragma warning restore 649
 }

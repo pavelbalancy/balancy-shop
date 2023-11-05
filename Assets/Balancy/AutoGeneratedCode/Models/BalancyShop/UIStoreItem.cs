@@ -22,9 +22,6 @@ namespace Balancy.Models.BalancyShop
 		[JsonProperty("asset")]
 		public readonly UnnyAsset Asset;
 
-		[JsonProperty("button2")]
-		public readonly UnnyAsset Button2;
-
 		[JsonProperty("button")]
 		public readonly UnnyObject Button;
 

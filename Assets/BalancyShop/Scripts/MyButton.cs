@@ -18,7 +18,8 @@ namespace BalancyShop
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
-            transform.localScale = originalScale * ScaleAmount;
+            if (this.interactable)
+                transform.localScale = originalScale * ScaleAmount;
         }
 
         public override void OnPointerUp(PointerEventData eventData)

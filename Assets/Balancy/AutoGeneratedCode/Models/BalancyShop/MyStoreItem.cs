@@ -11,6 +11,9 @@ namespace Balancy.Models.BalancyShop
 
 
 
+		[JsonProperty("badgePriority")]
+		public readonly int BadgePriority;
+
 		[JsonProperty("description"), JsonConverter(typeof(LocalizedStringConverter))]
 		public readonly LocalizedString Description;
 

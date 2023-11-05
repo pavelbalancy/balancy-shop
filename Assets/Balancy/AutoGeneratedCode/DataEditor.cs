@@ -44,15 +44,19 @@ namespace Balancy
 
 		public static class BalancyShop
 		{
+			public static List<Models.BalancyShop.GameSection> GameSections { get; private set; }
 			public static List<Models.BalancyShop.MyItem> MyItems { get; private set; }
 			public static List<Models.BalancyShop.UIStoreItem> UIStoreItems { get; private set; }
+			public static List<Models.BalancyShop.BadgeInfo> BadgeInfos { get; private set; }
 			public static List<Models.BalancyShop.MyOffer> MyOffers { get; private set; }
 			public static List<Models.BalancyShop.MyStoreItem> MyStoreItems { get; private set; }
 
 			public static void Init()
 			{
+				GameSections = DataManager.ParseList<Models.BalancyShop.GameSection>();
 				MyItems = DataManager.ParseList<Models.BalancyShop.MyItem>();
 				UIStoreItems = DataManager.ParseList<Models.BalancyShop.UIStoreItem>();
+				BadgeInfos = DataManager.ParseList<Models.BalancyShop.BadgeInfo>();
 				MyOffers = DataManager.ParseList<Models.BalancyShop.MyOffer>();
 				MyStoreItems = DataManager.ParseList<Models.BalancyShop.MyStoreItem>();
 			}
@@ -60,6 +64,7 @@ namespace Balancy
 
 		static partial void PrepareGeneratedData() {
 			ParseDictionary<Models.BalancyShop.MyCustomSlot>();
+			ParseDictionary<Models.BalancyShop.Badge>();
 			BalancyShop.Init();
 			SmartStorage.SetLoadSmartObjectMethod(LoadSmartObject);
 		}

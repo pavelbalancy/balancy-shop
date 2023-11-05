@@ -15,6 +15,8 @@ namespace BalancyShop
         [SerializeField] private ContentHolder content;
         [SerializeField] private GameObject slotPrefab;
 
+        private int pageRefreshIndex = 0;
+
         private Page _page;
         public void Init(GameStoreBase smartConfig, Page page)
         {
@@ -38,8 +40,12 @@ namespace BalancyShop
         {
             content.CleanUp();
 
+            var pageIndex = ++pageRefreshIndex;
             PreloadPrefabs(page, () =>
             {
+                if (pageIndex != pageRefreshIndex)
+                    return;
+                
                 foreach (var storeSlot in page.ActiveSlots)
                 {
                     if (storeSlot is MyCustomSlot myCustomSlot)
@@ -47,7 +53,7 @@ namespace BalancyShop
                         var ui = myCustomSlot.UIData;
                         AssetsLoader.GetObject(ui.Asset.Name, prefab =>
                         {
-                            if (content == null || UnityObjectUtility.IsDestroyed(content))
+                            if (content == null || UnityObjectUtility.IsDestroyed(content) || pageIndex != pageRefreshIndex)
                                 return;
                             
                             var storeItemView = content.AddElement<SlotView>(prefab as GameObject);

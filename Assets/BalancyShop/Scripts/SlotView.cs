@@ -23,20 +23,17 @@ namespace BalancyShop
         [SerializeField] private TMP_Text countCrossed;
         [SerializeField] private Image icon;
         
-        [SerializeField] private GameObject ribbon;
-        [SerializeField] private Image ribbonIcon;
-        [SerializeField] private TMP_Text ribbonText;
-        
         [SerializeField] private BuyButton buyButton;
 
-        [SerializeField] private QualityRibbonConfig ribbonConfig;
         [SerializeField] private ForceTransformUpdater transformUpdater;
         
         [SerializeField] private Image background;
         [SerializeField] private ContentHolder rewardContent;
         [SerializeField] private GameObject defaultItemView;
         [SerializeField] private TMP_Text timer;
-
+        
+        [SerializeField] private SaleView saleView;
+        
         private StoreItem _storeItem;
         private UIStoreItem _uiStoreItem;
         private bool _needToSubscribe;
@@ -48,7 +45,7 @@ namespace BalancyShop
         {
             _needToSubscribe = NeedToSubscribe(slot);
             Init(slot.GetStoreItem(), (slot as MyCustomSlot)?.UIData);
-            ApplyRibbon(slot);
+            ApplyBadge(slot.Type);
             buyButton.Init(slot);
         }
         
@@ -69,6 +66,8 @@ namespace BalancyShop
             _needToSubscribe = true;
             Init(offerInfo.GameOffer.StoreItem, (offerInfo.GameOffer as MyOffer)?.UIStoreSlotData);
             buyButton.Init(offerInfo);
+            if (offerInfo.GameOffer is MyOffer myOffer)
+                ApplyBadge(myOffer.Badge);
             onGetTimeLeft = offerInfo.GetSecondsLeftBeforeDeactivation;
         }
 
@@ -80,6 +79,12 @@ namespace BalancyShop
             ApplyMainInfo(_storeItem);
             ShowReward(storeItem, uiStoreItem);
             SubscribeForTimers();
+            SetSale();
+        }
+
+        private void SetSale()
+        {
+            saleView?.SetMultiplier(_storeItem.GetMultiplier());
         }
 
         private void ApplyBackground(UIStoreItem uiStoreItem)
@@ -168,18 +173,11 @@ namespace BalancyShop
             }
         }
 
-        private void ApplyRibbon(Slot slot)
+        private void ApplyBadge(SlotType slotType)
         {
-            var config = ribbonConfig?.GetQualityConfig(slot.Type);
-            if (config == null)
-                ribbon?.SetActive(false);
-            else
-            {
-                ribbonText?.SetText(config.DisplayText);
-                if (ribbonIcon != null)
-                    ribbonIcon.sprite = config.RibbonImage;
-                ribbon.SetActive(true);
-            }
+            var badgeInfo = GameUtils.FindBadgeInfo(slotType);
+            if (badgeInfo != null)
+                saleView?.SetBadge(badgeInfo);
         }
 
         private void ShowReward(StoreItem storeItem, UIStoreItem uiStoreItem)

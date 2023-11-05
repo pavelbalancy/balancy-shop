@@ -193,7 +193,7 @@ namespace Balancy.Example
             string buyTextString = "WRONG_PRICE";
             if (storeItem.IsFree())
             {
-                buyTextString = "Free";
+                buyTextString = "Collect";
             }
             else
             {

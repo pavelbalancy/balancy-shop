@@ -1,3 +1,4 @@
+using Balancy;
 using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using TMPro;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace BalancyShop
 {
-    public class ShopWindow : MonoBehaviour
+    public class ShopWindow : BaseWindow
     {
         [SerializeField] private TMP_Text header;
         [SerializeField] private RectTransform content;
@@ -15,9 +16,11 @@ namespace BalancyShop
 
         private GameStoreBase _smartConfig;
 
-        public void Init(SmartConfig smartConfig)
+        public override void Refresh()
         {
-            Refresh(smartConfig);
+            base.Refresh();
+            if (LiveOps.Store.DefaultStore != null)
+                Refresh(LiveOps.Store.DefaultStore);
         }
 
         private void OnDestroy()

@@ -14,11 +14,14 @@ namespace BalancyShop
 {
     public class BuyButton : MonoBehaviour
     {
+        private const int REFRESH_RATE = 1; 
+        
         private interface IBuyButton
         {
             void TryToBuy();
             StoreItem GetStoreItem();
             bool IsAvailable();
+            int GetSecondsLeftUntilAvailable();
             UIStoreItem GetUIData();
         }
 
@@ -89,6 +92,11 @@ namespace BalancyShop
             public bool IsAvailable()
             {
                 return _slot.IsAvailable();
+            }
+            
+            public int GetSecondsLeftUntilAvailable()
+            {
+                return _slot.GetSecondsLeftUntilAvailable();
             }
 
             public UIStoreItem GetUIData()
@@ -166,6 +174,11 @@ namespace BalancyShop
                 return true;
             }
 
+            public int GetSecondsLeftUntilAvailable()
+            {
+                return 0;
+            }
+
             public UIStoreItem GetUIData()
             {
                 return (_offerInfo.GameOffer as MyOffer)?.UIStoreSlotData;
@@ -179,6 +192,7 @@ namespace BalancyShop
         [SerializeField] private Image buyButtonBack;
         
         [SerializeField] private Sprite watchAdIcon;
+        [SerializeField] private TMP_Text notAvailableText;
         
         private IBuyButton _buyButtonLogic;
         
@@ -207,16 +221,42 @@ namespace BalancyShop
 
         public void Refresh()
         {
-            ApplyBuyButton(_buyButtonLogic.GetStoreItem());
+            ApplyBuyButton();
+            SetTimer(!_buyButtonLogic.IsAvailable());
+        }
+
+        private void OnDisable()
+        {
+            SetTimer(false);
+        }
+
+        private bool _subscribedForTimer;
+
+        private void SetTimer(bool required)
+        {
+            if (required == _subscribedForTimer)
+                return;
+
+            if (required)
+            {
+                BalancyTimer.SubscribeForTimer(REFRESH_RATE, ApplyBuyButton);
+            }
+            else
+            {
+                BalancyTimer.UnsubscribeFromTimer(REFRESH_RATE, ApplyBuyButton);
+            }
+
+            _subscribedForTimer = required;
         }
         
-        private void ApplyBuyButton(StoreItem storeItem)
+        private void ApplyBuyButton()
         {
+            StoreItem storeItem = _buyButtonLogic.GetStoreItem();
             buyIcon?.gameObject.SetActive(false);
             string buyTextString = "WRONG_PRICE";
             if (storeItem.IsFree())
             {
-                buyTextString = "Free";
+                buyTextString = "Collect";
             }
             else
             {
@@ -285,7 +325,23 @@ namespace BalancyShop
             buyText?.SetText(buyTextString);
             buyHintText?.gameObject.SetActive(showHint);
             if (buyButton != null)
-                buyButton.interactable = _buyButtonLogic.IsAvailable();
+            {
+                if (_buyButtonLogic.IsAvailable())
+                {
+                    buyButton.interactable = true;
+                    notAvailableText?.gameObject.SetActive(false);
+                }
+                else
+                {
+                    buyButton.interactable = false;
+                    if (notAvailableText != null)
+                    {
+                        var text = GameUtils.FormatTime(_buyButtonLogic.GetSecondsLeftUntilAvailable());
+                        notAvailableText.SetText(text);
+                        notAvailableText.gameObject.SetActive(true);
+                    }
+                }
+            }
 
             if (buyButtonBack != null)
             {
