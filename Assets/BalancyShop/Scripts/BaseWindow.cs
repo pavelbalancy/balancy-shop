@@ -7,7 +7,7 @@ namespace BalancyShop
     {
         [SerializeField] public WindowType winType;
 
-        public void SetActive(bool isActive)
+        public virtual void SetActive(bool isActive)
         {
             gameObject.SetActive(isActive);
             if (isActive)

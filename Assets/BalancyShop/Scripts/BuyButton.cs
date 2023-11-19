@@ -16,13 +16,39 @@ namespace BalancyShop
     {
         private const int REFRESH_RATE = 1; 
         
-        private interface IBuyButton
+        private abstract class IBuyButton
         {
-            void TryToBuy();
-            StoreItem GetStoreItem();
-            bool IsAvailable();
-            int GetSecondsLeftUntilAvailable();
-            UIStoreItem GetUIData();
+            public abstract void TryToBuy(Action complete);
+            public abstract StoreItem GetStoreItem();
+            public virtual bool IsAvailable() => true;
+            public virtual int GetSecondsLeftUntilAvailable() => 0;
+            public abstract UIStoreItem GetUIData();
+            public virtual string GetHintText() => null;
+
+            protected PaymentInfo GetPaymentInfo()
+            {
+                // This is the code you should use:
+                // //unityProduct is what you receive from Unity payments, it's a type of UnityEngine.Purchasing.Product
+                // var paymentInfo = new PaymentInfo
+                // {
+                //     Receipt = unityProduct.receipt,
+                //     Price = (float)unityProduct.metadata.localizedPrice,
+                //     Currency = unityProduct.metadata.isoCurrencyCode,
+                //     ProductId = unityProduct.definition.id,
+                //     OrderId = unityProduct.transactionID
+                // };
+                
+                // This is just for testing purposes, because we didn't connect UnityPurchasing yet:
+                var storeItem = GetStoreItem();
+                return new PaymentInfo
+                {
+                    Currency = "USD",
+                    Price = storeItem.Price.Product.Price,
+                    ProductId = storeItem.Price.Product.ProductId,
+                    OrderId = "<transactionId>",
+                    Receipt = "<receipt>"
+                };
+            }
         }
 
         private class BuyButtonStoreSlot : IBuyButton
@@ -34,12 +60,13 @@ namespace BalancyShop
                 _slot = slot;
             }
             
-            public void TryToBuy()
+            public override void TryToBuy(Action complete)
             {
                 var storeItem = _slot.GetStoreItem();
                 if (storeItem.IsFree())
                 {
                     Balancy.LiveOps.Store.ItemWasPurchased(storeItem, null);
+                    complete?.Invoke();
                 }
                 else
                 {
@@ -47,20 +74,17 @@ namespace BalancyShop
                     {
                         case PriceType.Hard:
                             //TODO write your payment logic here and then invoke the following method:
-                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, new PaymentInfo
-                            {
-                                Currency = "USD",
-                                Price = storeItem.Price.Product.Price,
-                                ProductId = storeItem.Price.Product.ProductId
-                            }, response =>
+                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, GetPaymentInfo(), response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                                 //TODO give resources from Reward
+                                complete?.Invoke();
                             });
                             break;
                         case PriceType.Soft:
                             //TODO Try to take soft resources from Price
                             Balancy.LiveOps.Store.ItemWasPurchased(storeItem, storeItem.Price);
+                            complete?.Invoke();
                             //TODO give resources from Reward
                             break;
                         case PriceType.Ads:
@@ -73,10 +97,9 @@ namespace BalancyShop
                                     });
                             }
                             else
-                            {
                                 LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
-                            }
-
+                            
+                            complete?.Invoke();
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -84,42 +107,53 @@ namespace BalancyShop
                 }
             }
 
-            public StoreItem GetStoreItem()
+            public override StoreItem GetStoreItem()
             {
                 return _slot.GetStoreItem();
             }
 
-            public bool IsAvailable()
+            public override bool IsAvailable()
             {
                 return _slot.IsAvailable();
             }
             
-            public int GetSecondsLeftUntilAvailable()
+            public override int GetSecondsLeftUntilAvailable()
             {
                 return _slot.GetSecondsLeftUntilAvailable();
             }
 
-            public UIStoreItem GetUIData()
+            public override UIStoreItem GetUIData()
             {
                 return (_slot as MyCustomSlot)?.UIData;
+            }
+
+            public override string GetHintText()
+            {
+                if (!_slot.HasLimits())
+                    return null;
+
+                return $"{_slot.GetPurchasesDoneDuringTheLastCycle()}/{_slot.GetPurchasesLimitForCycle()}";
             }
         }
         
         private class BuyButtonOffer : IBuyButton
         {
             private readonly OfferInfo _offerInfo;
+            private readonly UIStoreItem _uiStoreItem;
 
-            public BuyButtonOffer(OfferInfo offerInfo)
+            public BuyButtonOffer(OfferInfo offerInfo, UIStoreItem uiStoreItem)
             {
                 _offerInfo = offerInfo;
+                _uiStoreItem = uiStoreItem;
             }
             
-            public void TryToBuy()
+            public override void TryToBuy(Action complete)
             {
                 var storeItem = _offerInfo.GameOffer.StoreItem;
                 if (storeItem.IsFree())
                 {
                     Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, null);
+                    complete?.Invoke();
                 }
                 else
                 {
@@ -127,20 +161,17 @@ namespace BalancyShop
                     {
                         case PriceType.Hard:
                             //TODO write your payment logic here and then invoke the following method:
-                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, new PaymentInfo
-                            {
-                                Currency = "USD",
-                                Price = storeItem.Price.Product.Price,
-                                ProductId = storeItem.Price.Product.ProductId
-                            }, response =>
+                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, GetPaymentInfo(), response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                                 //TODO give resources from Reward
+                                complete?.Invoke();
                             });
                             break;
                         case PriceType.Soft:
                             //TODO Try to take soft resources from Price
                             Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, storeItem.Price);
+                            complete?.Invoke();
                             //TODO give resources from Reward
                             break;
                         case PriceType.Ads:
@@ -153,10 +184,9 @@ namespace BalancyShop
                                     });
                             }
                             else
-                            {
                                 LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
-                            }
-
+                            
+                            complete?.Invoke();
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -164,24 +194,14 @@ namespace BalancyShop
                 }
             }
 
-            public StoreItem GetStoreItem()
+            public override StoreItem GetStoreItem()
             {
                 return _offerInfo.GameOffer.StoreItem;
             }
 
-            public bool IsAvailable()
+            public override UIStoreItem GetUIData()
             {
-                return true;
-            }
-
-            public int GetSecondsLeftUntilAvailable()
-            {
-                return 0;
-            }
-
-            public UIStoreItem GetUIData()
-            {
-                return (_offerInfo.GameOffer as MyOffer)?.UIStoreSlotData;
+                return _uiStoreItem;
             }
         }
         
@@ -192,7 +212,6 @@ namespace BalancyShop
         [SerializeField] private Image buyButtonBack;
         
         [SerializeField] private Sprite watchAdIcon;
-        [SerializeField] private TMP_Text notAvailableText;
         
         private IBuyButton _buyButtonLogic;
         
@@ -202,9 +221,9 @@ namespace BalancyShop
             Refresh();
         }
         
-        public void Init(OfferInfo offerInfo)
+        public void Init(OfferInfo offerInfo, UIStoreItem uiStoreItem)
         {
-            _buyButtonLogic = new BuyButtonOffer(offerInfo);
+            _buyButtonLogic = new BuyButtonOffer(offerInfo, uiStoreItem);
             Refresh();
         }
         
@@ -215,8 +234,12 @@ namespace BalancyShop
 
         private void TryToBuy()
         {
-            _buyButtonLogic.TryToBuy();
-            Refresh();
+            buyButton.interactable = false;
+            _buyButtonLogic.TryToBuy(() =>
+            {
+                buyButton.interactable = true;
+                Refresh();
+            });
         }
 
         public void Refresh()
@@ -250,6 +273,13 @@ namespace BalancyShop
         }
         
         private void ApplyBuyButton()
+        {
+            SetButtonTextAndIcon();
+            ApplyButtonState();
+            SetButtonBackground();
+        }
+
+        private void SetButtonTextAndIcon()
         {
             StoreItem storeItem = _buyButtonLogic.GetStoreItem();
             buyIcon?.gameObject.SetActive(false);
@@ -301,48 +331,45 @@ namespace BalancyShop
                 }
             }
 
-            bool showHint = false;
-            // switch (_slot)
-            // {
-            //     case SlotPeriod slotPeriod:
-            //     {
-            //         buyTextString += $" ({slotPeriod.GetPurchasesDoneCount()}/{slotPeriod.Limit})";
-            //         buyHintText.SetText($"Resets in {slotPeriod.GetSecondsUntilReset()}");//TODO fix
-            //         showHint = true;
-            //         break;
-            //     }
-            //     case SlotCooldown slotCooldown:
-            //     {
-            //         if (slotCooldown.IsAvailable())
-            //             buyHintText.SetText($"CD {slotCooldown.Cooldown}");
-            //         else
-            //             buyHintText.SetText($"Resets in {slotCooldown.GetSecondsLeftUntilAvailable()}");
-            //         showHint = true;
-            //         break;
-            //     }
-            // }
-            
             buyText?.SetText(buyTextString);
-            buyHintText?.gameObject.SetActive(showHint);
+        }
+
+        private void SetAdditionalHintText()
+        {
+            var hintText = _buyButtonLogic.GetHintText();
+            if (string.IsNullOrEmpty(hintText))
+                buyHintText?.gameObject.SetActive(false);
+            else
+            {
+                buyHintText?.gameObject.SetActive(true);
+                buyHintText?.SetText(hintText);
+            }
+        }
+
+        private void ApplyButtonState()
+        {
             if (buyButton != null)
             {
                 if (_buyButtonLogic.IsAvailable())
                 {
                     buyButton.interactable = true;
-                    notAvailableText?.gameObject.SetActive(false);
+                    SetAdditionalHintText();
                 }
                 else
                 {
                     buyButton.interactable = false;
-                    if (notAvailableText != null)
+                    if (buyHintText != null)
                     {
                         var text = GameUtils.FormatTime(_buyButtonLogic.GetSecondsLeftUntilAvailable());
-                        notAvailableText.SetText(text);
-                        notAvailableText.gameObject.SetActive(true);
+                        buyHintText.SetText(text);
+                        buyHintText.gameObject.SetActive(true);
                     }
                 }
             }
+        }
 
+        private void SetButtonBackground()
+        {
             if (buyButtonBack != null)
             {
                 UIStoreItem uiStoreItem = _buyButtonLogic.GetUIData();

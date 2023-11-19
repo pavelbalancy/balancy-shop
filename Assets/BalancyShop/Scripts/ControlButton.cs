@@ -70,7 +70,11 @@ namespace BalancyShop
             var badgeInfo = FindBadgeInfoWithHighestPriority();
 
             if (_badgeInfo == badgeInfo)
+            {
+                if (badgeInfo == null)
+                    badge.SetActive(false);
                 return;
+            }
 
             if (badgeInfo != null)
             {

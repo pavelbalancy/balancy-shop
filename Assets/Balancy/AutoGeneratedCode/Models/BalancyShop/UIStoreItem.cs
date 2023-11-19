@@ -8,6 +8,8 @@ namespace Balancy.Models.BalancyShop
 	public class UIStoreItem : BaseModel
 	{
 
+		[JsonProperty]
+		private string unnyIdBadge;
 
 
 		[JsonProperty("content")]
@@ -21,6 +23,9 @@ namespace Balancy.Models.BalancyShop
 
 		[JsonProperty("asset")]
 		public readonly UnnyAsset Asset;
+
+		[JsonIgnore]
+		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);
 
 		[JsonProperty("button")]
 		public readonly UnnyObject Button;

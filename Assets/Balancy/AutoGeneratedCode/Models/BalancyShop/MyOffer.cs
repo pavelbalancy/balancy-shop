@@ -9,8 +9,13 @@ namespace Balancy.Models.BalancyShop
 	{
 
 		[JsonProperty]
+		private string unnyIdUIPopupData;
+		[JsonProperty]
 		private string unnyIdUIStoreSlotData;
 
+
+		[JsonIgnore]
+		public Models.BalancyShop.UIStoreItem UIPopupData => DataEditor.GetModelByUnnyId<Models.BalancyShop.UIStoreItem>(unnyIdUIPopupData);
 
 		[JsonIgnore]
 		public Models.BalancyShop.UIStoreItem UIStoreSlotData => DataEditor.GetModelByUnnyId<Models.BalancyShop.UIStoreItem>(unnyIdUIStoreSlotData);

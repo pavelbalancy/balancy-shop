@@ -1,6 +1,7 @@
 using System;
 using Balancy.Addressables;
 using Balancy.Models.BalancyShop;
+using Balancy.Models.LiveOps.Store;
 using Balancy.Models.SmartObjects;
 using TMPro;
 using Unity.VisualScripting;
@@ -45,6 +46,12 @@ namespace BalancyShop
             {
                 if (pageIndex != pageRefreshIndex)
                     return;
+
+                void CreateNewSlot(Slot storeSlot, GameObject prefab)
+                {
+                    var storeItemView = content.AddElement<SlotView>(prefab);
+                    storeItemView.Init(storeSlot);
+                }
                 
                 foreach (var storeSlot in page.ActiveSlots)
                 {
@@ -56,14 +63,12 @@ namespace BalancyShop
                             if (content == null || UnityObjectUtility.IsDestroyed(content) || pageIndex != pageRefreshIndex)
                                 return;
                             
-                            var storeItemView = content.AddElement<SlotView>(prefab as GameObject);
-                            storeItemView.Init(storeSlot);
+                            CreateNewSlot(storeSlot, prefab as GameObject);
                         });
                     }
                     else
                     {
-                        var storeItemView = content.AddElement<SlotView>(slotPrefab);
-                        storeItemView.Init(storeSlot);
+                        CreateNewSlot(storeSlot, slotPrefab);
                     }
                 }
             });

@@ -28,5 +28,15 @@ namespace BalancyShop
             gameObject.SetActive(true);
             text.SetText(badgeInfo.Text.Value);
         }
+        
+        public void SetBadge(Badge badge)
+        {
+            gameObject.SetActive(true);
+            text.SetText(badge.Text.Value);
+            badge.Back?.LoadSprite(sprite =>
+            {
+                image.sprite = sprite;
+            });
+        }
     }
 }

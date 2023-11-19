@@ -13,6 +13,14 @@ namespace Balancy
 		{
 			switch (name)
 			{
+				case "BalancyShopData":
+				{
+					SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, key, responseData =>
+					{
+						callback?.Invoke(responseData.Data);
+					});
+					break;
+				}
 				case "SmartObjects.UnnyProfile":
 				{
 					SmartStorage.LoadSmartObject<Data.SmartObjects.UnnyProfile>(userId, key, responseData =>
@@ -29,16 +37,19 @@ namespace Balancy
 
 		static partial void MoveAllData(string userId)
 		{
+			MigrateSmartObject(userId, "BalancyShopData");
 			MigrateSmartObject(userId, "UnnyProfile");
 		}
 
 		static partial void TransferAllSmartObjectsFromLocalToCloud(string userId)
 		{
+			TransferSmartObjectFromLocalToCloud<Data.BalancyShopData>(userId);
 			TransferSmartObjectFromLocalToCloud<Data.SmartObjects.UnnyProfile>(userId);
 		}
 
 		static partial void ResetAllSmartObjects(string userId)
 		{
+			ResetSmartObject<Data.BalancyShopData>(userId);
 			ResetSmartObject<Data.SmartObjects.UnnyProfile>(userId);
 		}
 

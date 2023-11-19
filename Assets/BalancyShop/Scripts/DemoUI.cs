@@ -1,4 +1,4 @@
-using Balancy;
+using Balancy.Data.SmartObjects;
 using Balancy.Models.GameShop;
 using UnityEngine;
 
@@ -10,13 +10,19 @@ namespace BalancyShop
         [SerializeField] private WindowType defaultWindow;
         [SerializeField] private RectTransform windowsHolder;
         
+        [SerializeField] private OfferPopup offerPopup;
+        
         private BaseWindow _selectedWindow;
         private BaseWindow[] _allWindows;
+
+        private static DemoUI _instance;
         
         public void Init()
         {
             _allWindows = windowsHolder.GetComponentsInChildren<BaseWindow>();
             OnWindowSelected(defaultWindow);
+            offerPopup.Hide();
+            _instance = this;
         }
 
         public void Refresh()
@@ -33,6 +39,23 @@ namespace BalancyShop
                     _selectedWindow = window;
                 window.SetActive(window.winType == windowType);
             }
+        }
+
+        public static void ShowRandomOffer()
+        {
+            var allOffers = Balancy.LiveOps.GameOffers.GetActiveOffers();
+            if (allOffers.Length <= 0)
+                return;
+            
+            int rndIndex = Random.Range(0, allOffers.Length);
+            var rndOffer = allOffers[rndIndex];
+
+            _instance?.ShowOffer(rndOffer);
+        }
+        
+        private void ShowOffer(OfferInfo offerInfo)
+        {
+            offerPopup.Show(offerInfo);
         }
     }
 }

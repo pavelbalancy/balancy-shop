@@ -70,7 +70,7 @@ namespace BalancyShop
                                     return;
                             
                                 var storeItemView = content.AddElement<SlotView>(prefab as GameObject);
-                                storeItemView.Init(offerInfo);
+                                storeItemView.Init(offerInfo, myOffer.UIStoreSlotData);
                             });
                         }
                     }

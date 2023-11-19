@@ -44,9 +44,38 @@ namespace BalancyShop
         public void Init(Slot slot)
         {
             _needToSubscribe = NeedToSubscribe(slot);
-            Init(slot.GetStoreItem(), (slot as MyCustomSlot)?.UIData);
-            ApplyBadge(slot.Type);
+            var ui = (slot as MyCustomSlot)?.UIData;
+            Init(slot.GetStoreItem(), ui);
+            ApplySlotBadge(slot, ui);
             buyButton.Init(slot);
+        }
+        
+        public void Init(OfferInfo offerInfo, UIStoreItem uiStoreItem)
+        {
+            _needToSubscribe = true;
+            Init(offerInfo.GameOffer.StoreItem, uiStoreItem);
+            buyButton.Init(offerInfo, uiStoreItem);
+            ApplyOfferBadge(offerInfo, uiStoreItem);
+            onGetTimeLeft = offerInfo.GetSecondsLeftBeforeDeactivation;
+        }
+        
+        private void ApplySlotBadge(Slot slot, UIStoreItem uiStoreItem)
+        {
+            if (uiStoreItem.Badge != null)
+                saleView?.SetBadge(uiStoreItem.Badge);
+            else
+                ApplyBadge(slot.Type);
+        }
+
+        private void ApplyOfferBadge(OfferInfo offerInfo, UIStoreItem uiStoreItem)
+        {
+            if (uiStoreItem.Badge != null)
+                saleView?.SetBadge(uiStoreItem.Badge);
+            else
+            {
+                if (offerInfo.GameOffer is MyOffer myOffer)
+                    ApplyBadge(myOffer.Badge);
+            }
         }
         
         private bool NeedToSubscribe(Slot slot)
@@ -59,16 +88,6 @@ namespace BalancyShop
             }
 
             return false;
-        }
-
-        public void Init(OfferInfo offerInfo)
-        {
-            _needToSubscribe = true;
-            Init(offerInfo.GameOffer.StoreItem, (offerInfo.GameOffer as MyOffer)?.UIStoreSlotData);
-            buyButton.Init(offerInfo);
-            if (offerInfo.GameOffer is MyOffer myOffer)
-                ApplyBadge(myOffer.Badge);
-            onGetTimeLeft = offerInfo.GetSecondsLeftBeforeDeactivation;
         }
 
         private void Init(StoreItem storeItem, UIStoreItem uiStoreItem)

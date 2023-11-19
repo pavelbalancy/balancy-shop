@@ -52,6 +52,8 @@ namespace BalancyShop
                 OnReadyCallback = response =>
                 {
                     Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion}");
+                    if (!response.Success)
+                        Debug.LogError($"ERR {response.Error.Code} - {response.Error.Message}");
                     canvasDemo.Refresh();
                 }
             });

@@ -1,4 +1,5 @@
 using Balancy;
+using Balancy.Data;
 using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using TMPro;
@@ -23,6 +24,22 @@ namespace BalancyShop
                 Refresh(LiveOps.Store.DefaultStore);
         }
 
+        public override void SetActive(bool isActive)
+        {
+            base.SetActive(isActive);
+            if (LiveOps.Store.DefaultStore != null)
+                SetShopOpenStatus();
+        }
+
+        private void SetShopOpenStatus()
+        {
+            Balancy.Data.SmartStorage.LoadSmartObject<BalancyShopData>(response =>
+            {
+                var shopData = response.Data;
+                shopData.Info.ShopOpened = gameObject.activeSelf;
+            });
+        }
+
         private void OnDestroy()
         {
             CleanUp();
@@ -39,6 +56,8 @@ namespace BalancyShop
 
         public void Refresh(GameStoreBase smartConfig)
         {
+            SetShopOpenStatus();
+            
             if (_smartConfig != smartConfig)
             {
                 CleanUp();

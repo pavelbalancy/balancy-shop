@@ -34,6 +34,9 @@ namespace BalancyShop
 
         public static BadgeInfo FindBadgeInfo(SlotType slotType)
         {
+            if (slotType == SlotType.Default)
+                return null;
+            
             var allDocs = DataEditor.BalancyShop.BadgeInfos;
             foreach (var doc in allDocs)
             {
