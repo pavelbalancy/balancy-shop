@@ -19,8 +19,11 @@ namespace BalancyShop
         private int pageRefreshIndex = 0;
 
         private Page _page;
-        public void Init(GameStoreBase smartConfig, Page page)
+        private Action _onFinished;
+        
+        public void Init(GameStoreBase smartConfig, Page page, Action onFinished)
         {
+            _onFinished = onFinished;
             _page = page;
             page.OnStorePageUpdatedEvent += Refresh;
             Refresh(smartConfig, page);
@@ -47,10 +50,15 @@ namespace BalancyShop
                 if (pageIndex != pageRefreshIndex)
                     return;
 
+                int createdSlots = 0;
                 void CreateNewSlot(Slot storeSlot, GameObject prefab)
                 {
                     var storeItemView = content.AddElement<SlotView>(prefab);
                     storeItemView.Init(storeSlot);
+                    
+                    createdSlots++;
+                    if (createdSlots == page.ActiveSlots.Count)
+                        _onFinished?.Invoke();
                 }
                 
                 foreach (var storeSlot in page.ActiveSlots)

@@ -4,6 +4,7 @@ using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BalancyShop
 {
@@ -74,8 +75,21 @@ namespace BalancyShop
             {
                 var newButton = Instantiate(pagePrefab, content);
                 var storeTabButton = newButton.GetComponent<PageView>();
-                storeTabButton.Init(smartConfig, page);
+                storeTabButton.Init(smartConfig, page, RefreshSize);
             }
+        }
+
+        private Coroutine _coroutine;
+        private void RefreshSize()
+        {
+            if (_coroutine != null)
+                Coroutines.StopCoroutineRemotely(_coroutine);
+            
+            _coroutine = Coroutines.WaitTwoFrames(() =>
+            {
+                _coroutine = null;
+                LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+            });
         }
 
         private void AddOffersSection()
