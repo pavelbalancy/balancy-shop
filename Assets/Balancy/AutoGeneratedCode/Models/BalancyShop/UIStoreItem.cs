@@ -12,8 +12,8 @@ namespace Balancy.Models.BalancyShop
 		private string unnyIdBadge;
 
 
-		[JsonProperty("content")]
-		public readonly Models.BalancyShop.UIItem[] Content;
+		[JsonIgnore]
+		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);
 
 		[JsonProperty("background")]
 		public readonly UnnyObject Background;
@@ -24,8 +24,8 @@ namespace Balancy.Models.BalancyShop
 		[JsonProperty("asset")]
 		public readonly UnnyAsset Asset;
 
-		[JsonIgnore]
-		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);
+		[JsonProperty("content")]
+		public readonly Models.BalancyShop.UIItem[] Content;
 
 		[JsonProperty("button")]
 		public readonly UnnyObject Button;

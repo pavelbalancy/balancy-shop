@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balancy", "Balancy.csproj", "{8b69344d-0579-b7d7-96ca-c67e412abb1c}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{d76409c1-ff29-40b1-40bd-7adb50f5de59}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balancy.Example", "Balancy.Example.csproj", "{9690fbfe-f60b-01f9-7485-ab71dc78b78d}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balancy.Editor", "Balancy.Editor.csproj", "{45f450f3-f558-a6df-dde1-518af63e1e9e}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{d76409c1-ff29-40b1-40bd-7adb50f5de59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Addressables.Balancy", "Addressables.Balancy.csproj", "{d8c267c5-22fd-3c0d-4349-5615f2ea6ca1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balancy.Editor", "Balancy.Editor.csproj", "{45f450f3-f558-a6df-dde1-518af63e1e9e}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Addressables.Balancy.Editor", "Addressables.Balancy.Editor.csproj", "{5ca310c1-b790-1229-6f8a-122664370682}"
 EndProject
@@ -20,14 +20,14 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8b69344d-0579-b7d7-96ca-c67e412abb1c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8b69344d-0579-b7d7-96ca-c67e412abb1c}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{d76409c1-ff29-40b1-40bd-7adb50f5de59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{d76409c1-ff29-40b1-40bd-7adb50f5de59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9690fbfe-f60b-01f9-7485-ab71dc78b78d}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9690fbfe-f60b-01f9-7485-ab71dc78b78d}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45f450f3-f558-a6df-dde1-518af63e1e9e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45f450f3-f558-a6df-dde1-518af63e1e9e}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{d76409c1-ff29-40b1-40bd-7adb50f5de59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{d76409c1-ff29-40b1-40bd-7adb50f5de59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{d8c267c5-22fd-3c0d-4349-5615f2ea6ca1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{d8c267c5-22fd-3c0d-4349-5615f2ea6ca1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45f450f3-f558-a6df-dde1-518af63e1e9e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45f450f3-f558-a6df-dde1-518af63e1e9e}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ca310c1-b790-1229-6f8a-122664370682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ca310c1-b790-1229-6f8a-122664370682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
