@@ -35,7 +35,7 @@ namespace Balancy.Editor
 		private static void SendRequestToServer(string gameId, string token, Constants.Environment env, Action<string, string> callback)
 		{
 			var helper = EditorCoroutineHelper.Create();
-			var req = new EditorUtils.ServerRequest($"{ADMINKA_GENERATOR}/adminka/v1.5/generate?game_id={gameId}&env={(int) env}&version=1", false);
+			var req = new EditorUtils.ServerRequest($"{ADMINKA_GENERATOR}/adminka/v1.7/generate?game_id={gameId}&env={(int) env}&version=1", false);
 			req.SetHeader("Content-Type", "application/json")
 				.SetHeader("Authorization", "Bearer " + token);
             
