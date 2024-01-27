@@ -40,45 +40,37 @@ namespace Balancy.Example
         private void TryToBuy()
         {
             var storeItem = _slot.GetStoreItem();
-            if (storeItem.IsFree())
+            if (storeItem.IsFree() || storeItem.Price.Type == PriceType.Soft || (storeItem.IsAdsWatching() && storeItem.IsEnoughResources()))
             {
-                Balancy.LiveOps.Store.ItemWasPurchased(storeItem, null);
+                Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
+                    response => { Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message); });
             }
             else
             {
                 switch (storeItem.Price.Type)
                 {
                     case PriceType.Hard:
+                        //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
                         Balancy.LiveOps.Store.ItemWasPurchased(storeItem, new PaymentInfo
                         {
                             Currency = "USD",
                             Price = storeItem.Price.Product.Price,
-                            ProductId = storeItem.Price.Product.ProductId
+                            ProductId = storeItem.Price.Product.ProductId,
+                            OrderId = "<TransactionId>",
+                            Receipt = "<Receipt>"
                         }, response =>
                         {
                             Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                             //TODO give resources from Reward
                         });
                         break;
-                    case PriceType.Soft:
-                        //TODO Try to take soft resources from Price
-                        Balancy.LiveOps.Store.ItemWasPurchased(storeItem, storeItem.Price);
-                        //TODO give resources from Reward
-                        break;
                     case PriceType.Ads:
-                        if (storeItem.IsEnoughResources())
+                        if (!storeItem.IsEnoughResources())
                         {
-                            Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
-                                response => { Debug.Log("Store item was purchased for Ads: " + response.Success); });
-                        }
-                        else
-                        {
+                            //TODO Show Ads here
                             LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
                         }
-
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
 

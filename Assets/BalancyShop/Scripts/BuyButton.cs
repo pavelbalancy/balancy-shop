@@ -63,46 +63,35 @@ namespace BalancyShop
             public override void TryToBuy(Action complete)
             {
                 var storeItem = _slot.GetStoreItem();
-                if (storeItem.IsFree())
+                if (storeItem.IsFree() || storeItem.Price.Type == PriceType.Soft || (storeItem.IsAdsWatching() && storeItem.IsEnoughResources()))
                 {
-                    Balancy.LiveOps.Store.ItemWasPurchased(storeItem, null);
-                    complete?.Invoke();
+                    Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
+                        response =>
+                        {
+                            Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message); 
+                            complete?.Invoke();
+                        });
                 }
                 else
                 {
                     switch (storeItem.Price.Type)
                     {
                         case PriceType.Hard:
-                            //TODO write your payment logic here and then invoke the following method:
+                            //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
                             Balancy.LiveOps.Store.ItemWasPurchased(storeItem, GetPaymentInfo(), response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
-                                //TODO give resources from Reward
                                 complete?.Invoke();
                             });
                             break;
-                        case PriceType.Soft:
-                            //TODO Try to take soft resources from Price
-                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, storeItem.Price);
-                            complete?.Invoke();
-                            //TODO give resources from Reward
-                            break;
                         case PriceType.Ads:
-                            if (storeItem.IsEnoughResources())
+                            if (!storeItem.IsEnoughResources())
                             {
-                                Balancy.LiveOps.Store.PurchaseStoreItem(storeItem,
-                                    response =>
-                                    {
-                                        Debug.Log("Store item was purchased for Ads: " + response.Success);
-                                    });
-                            }
-                            else
+                                //TODO Show Ads here
                                 LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
-                            
-                            complete?.Invoke();
+                                complete?.Invoke();
+                            }
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
@@ -150,46 +139,35 @@ namespace BalancyShop
             public override void TryToBuy(Action complete)
             {
                 var storeItem = _offerInfo.GameOffer.StoreItem;
-                if (storeItem.IsFree())
+                if (storeItem.IsFree() || storeItem.Price.Type == PriceType.Soft || (storeItem.IsAdsWatching() && storeItem.IsEnoughResources()))
                 {
-                    Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, null);
-                    complete?.Invoke();
+                    Balancy.LiveOps.GameOffers.PurchaseOffer(_offerInfo,
+                        response =>
+                        {
+                            Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message); 
+                            complete?.Invoke();
+                        });
                 }
                 else
                 {
                     switch (storeItem.Price.Type)
                     {
                         case PriceType.Hard:
-                            //TODO write your payment logic here and then invoke the following method:
+                            //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
                             Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, GetPaymentInfo(), response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
-                                //TODO give resources from Reward
                                 complete?.Invoke();
                             });
                             break;
-                        case PriceType.Soft:
-                            //TODO Try to take soft resources from Price
-                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, storeItem.Price);
-                            complete?.Invoke();
-                            //TODO give resources from Reward
-                            break;
                         case PriceType.Ads:
-                            if (storeItem.IsEnoughResources())
+                            if (!storeItem.IsEnoughResources())
                             {
-                                Balancy.LiveOps.GameOffers.PurchaseOffer(_offerInfo,
-                                    response =>
-                                    {
-                                        Debug.Log("Store item was purchased for Ads: " + response.Success);
-                                    });
-                            }
-                            else
+                                //TODO Show Ads here
                                 LiveOps.Store.AdWasWatchedForStoreItem(storeItem);
-                            
-                            complete?.Invoke();
+                                complete?.Invoke();
+                            }
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
@@ -360,9 +338,15 @@ namespace BalancyShop
                     buyButton.interactable = false;
                     if (buyHintText != null)
                     {
-                        var text = GameUtils.FormatTime(_buyButtonLogic.GetSecondsLeftUntilAvailable());
-                        buyHintText.SetText(text);
-                        buyHintText.gameObject.SetActive(true);
+                        var seconds = _buyButtonLogic.GetSecondsLeftUntilAvailable();
+                        if (seconds > 0)
+                        {
+                            var text = GameUtils.FormatTime(seconds);
+                            buyHintText.SetText(text);
+                            buyHintText.gameObject.SetActive(true);
+                        }
+                        else
+                            SetAdditionalHintText();
                     }
                 }
             }

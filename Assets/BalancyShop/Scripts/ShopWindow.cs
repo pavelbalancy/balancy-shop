@@ -15,6 +15,7 @@ namespace BalancyShop
         
         [SerializeField] private GameObject pagePrefab;
         [SerializeField] private GameObject pageOffersPrefab;
+        [SerializeField] private InventoryView inventoryResources;
 
         private GameStoreBase _smartConfig;
 
@@ -22,7 +23,10 @@ namespace BalancyShop
         {
             base.Refresh();
             if (LiveOps.Store.DefaultStore != null)
+            {
                 Refresh(LiveOps.Store.DefaultStore);
+                inventoryResources?.Init(LiveOps.Profile.Inventories.Currencies);
+            }
         }
 
         public override void SetActive(bool isActive)

@@ -23,7 +23,6 @@ namespace BalancyShop
                 ApiGameId = apiGameId,
                 PublicKey = publicKey,
                 Environment = GetEnvironment(),                
-                PreInitFromResourcesOrCache = true,//It's used for the fast launches
                 OnInitProgress = progress =>
                 {
                     Debug.Log($"***=> STATUS {progress.Status}");
@@ -51,7 +50,7 @@ namespace BalancyShop
                 },
                 OnReadyCallback = response =>
                 {
-                    Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion}");
+                    Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion} user={Auth.GetUserId()}");
                     if (!response.Success)
                         Debug.LogError($"ERR {response.Error.Code} - {response.Error.Message}");
                     canvasDemo.Refresh();

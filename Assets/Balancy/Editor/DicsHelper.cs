@@ -56,7 +56,7 @@ namespace Balancy.Editor {
                     var remote = remotePath + obj.Path;
                     loadingTextures++;
                     
-                    var cor = Balancy.ObjectsLoader.LoadSpriteFromUrl(remote, obj.GetBorder(), loadedSprite =>
+                    var cor = Balancy.ObjectsLoader.LoadSpriteFromUrl(remote, obj.GetBorder(), obj.PixelsPerUnit, loadedSprite =>
                     {
                         var path = fileName + obj.Path;
                         path = path.Replace('/', '-');

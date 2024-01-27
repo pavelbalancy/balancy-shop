@@ -19,7 +19,7 @@ namespace BalancyShop
         
         public void Init()
         {
-            _allWindows = windowsHolder.GetComponentsInChildren<BaseWindow>();
+            _allWindows = windowsHolder.GetComponentsInChildren<BaseWindow>(true);
             OnWindowSelected(defaultWindow);
             offerPopup.Hide();
             _instance = this;

@@ -34,7 +34,6 @@ namespace Balancy.Editor
         readonly string[] SERVER_TYPE = {"Development", "Stage", "Production"};
         private Balancy_EditorAuth _authHelper;
         
-        private int _selectedServer;
         private bool _downloading;
         private int _versionNumber;
         private float _downloadingProgress;
@@ -78,7 +77,11 @@ namespace Balancy.Editor
             GUILayout.BeginVertical(EditorStyles.helpBox);
 
             GUILayout.Label("Data Editor");
-            _selectedServer = GUILayout.SelectionGrid(_selectedServer, SERVER_TYPE, SERVER_TYPE.Length, EditorStyles.radioButton);
+            var curServer = AuthHelper.GetUserInfo().SelectedServer;
+
+            var newServer = GUILayout.SelectionGrid(curServer, SERVER_TYPE, SERVER_TYPE.Length, EditorStyles.radioButton);
+            if (newServer != curServer)
+                AuthHelper.GetUserInfo().SetServerType(newServer);
 
             if (_downloading)
             {
@@ -141,12 +144,12 @@ namespace Balancy.Editor
             _downloadingProgress = 0.5f;
             _downloadingFileName = "Generating the code...";
 
-            var gameInfo = _authHelper.GetSelectedGameInfo();
-            var token = _authHelper.GetAccessToken();
+            var gameInfo = AuthHelper.GetSelectedGameInfo();
+            var token = AuthHelper.GetAccessToken();
             Balancy_CodeGeneration.StartGeneration(
                 gameInfo.GameId,
                 token,
-                (Constants.Environment) _selectedServer,
+                (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer,
                 () => { _downloading = false; },
                 PluginUtils.CODE_GENERATION_PATH
             );
@@ -160,12 +163,12 @@ namespace Balancy.Editor
             }
             else
             {
-                var gameInfo = _authHelper.GetSelectedGameInfo();
-                var token = _authHelper.GetAccessToken();
+                var gameInfo = AuthHelper.GetSelectedGameInfo();
+                var token = AuthHelper.GetAccessToken();
                 SynchAddressablesEvent(
                     gameInfo.GameId,
                     token,
-                    (Constants.Environment) _selectedServer,
+                    (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer,
                     (fileName, progress) =>
                     {
                         _downloadingFileName = fileName;
@@ -194,12 +197,12 @@ namespace Balancy.Editor
             _downloading = true;
             _downloadingProgress = 0;
 
-            var gameInfo = _authHelper.GetSelectedGameInfo();
+            var gameInfo = AuthHelper.GetSelectedGameInfo();
             var appConfig = new AppConfig
             {
                 ApiGameId = gameInfo.GameId,
                 PublicKey = gameInfo.PublicKey,
-                Environment = (Constants.Environment) _selectedServer
+                Environment = (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer
             };
             
             DicsHelper.LoadDocs(appConfig, responseData =>
@@ -216,8 +219,8 @@ namespace Balancy.Editor
         
         private void ResetAll()
         {
-            var gameInfo = _authHelper.GetSelectedGameInfo();
-            DataEditor.ResetAllProfiles(gameInfo.GameId, (Constants.Environment) _selectedServer);
+            var gameInfo = AuthHelper.GetSelectedGameInfo();
+            DataEditor.ResetAllProfiles(gameInfo.GameId, (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer);
             EditorUtility.DisplayDialog("Success", "The profile was erased.", "Thanks");
         }
     }

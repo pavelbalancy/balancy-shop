@@ -11,6 +11,7 @@ namespace Balancy
         static partial void PrepareGeneratedData();
         static partial void MoveAllData(string userId);
         static partial void TransferAllSmartObjectsFromLocalToCloud(string userId);
+        static partial void PreloadAllSmartObjects(string userId, bool skipServerLoading);
         static partial void PreloadAllSmartObjects(string userId);
         static partial void ResetAllSmartObjects(string userId);
 
@@ -86,9 +87,9 @@ namespace Balancy
             });
         }
         
-        internal static void Preload(string userId)
+        internal static void Preload(string userId, bool skipServerLoading)
         {
-            PreloadAllSmartObjects(userId);
+            PreloadAllSmartObjects(userId, skipServerLoading);
         }
         
         private static void InvokeCallbackWhenResetsAreComplete(Action callback)

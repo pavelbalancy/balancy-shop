@@ -1,3 +1,4 @@
+using System;
 using Balancy;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace BalancyShop
     {
         [SerializeField] private TMP_InputField playerLevel;
         [SerializeField] private Button resetButton;
+        [SerializeField] private InventoryView inventoryResources;
+        [SerializeField] private InventoryView inventoryItems;
 
         private void Start()
         {
@@ -19,6 +22,8 @@ namespace BalancyShop
         private void OnEnable()
         {
             UpdateLevelText();
+            inventoryResources.Init(LiveOps.Profile.Inventories.Currencies);
+            inventoryItems.Init(LiveOps.Profile.Inventories.Items);
         }
 
         private void OnLevelChanged(string newValue)
@@ -34,7 +39,7 @@ namespace BalancyShop
             LiveOps.Profile.Restart(() =>
             {
                 Debug.Log("Profile was reset");
-                UpdateLevelText();
+                OnEnable();
             });
         }
 

@@ -21,6 +21,8 @@ namespace Balancy.Editor
         private static readonly GUILayoutOption LAYOUT_VERSION = GUILayout.Width(50);
         private static readonly GUILayoutOption LAYOUT_BUTTON = GUILayout.Width(100);
         private static readonly GUILayoutOption LAYOUT_BUTTON_REFRESH = GUILayout.Width(30);
+        
+        private static WebUtils.RequestsConfig _config;
 
         enum Status
         {
@@ -101,6 +103,7 @@ namespace Balancy.Editor
 
         public Balancy_Plugins(EditorWindow parent)
         {
+            _config = new WebUtils.RequestsConfig(Constants.GeneralConstants.CDN_URLS, 15, 3);
             PluginUtils.onUpdatePluginInfo = UpdateLocalPluginInfo;
             PluginUtils.onRemovePluginInfo = RemoveLocalPluginInfo;
             PluginUtils.onRedraw = parent.Repaint;
@@ -357,7 +360,7 @@ namespace Balancy.Editor
 
         private async void LoadRemoteConfig()
         {
-            var result = await Loader.TryLoadFile(PluginUtils.PLUGINS_ADDRESS_REMOTE);
+            var result = await Loader.TryLoadFile(PluginUtils.PLUGINS_ADDRESS_REMOTE, _config);
             if (string.IsNullOrEmpty(result))
             {
                 EditorUtility.DisplayDialog("Error", "Something went wrong", "Ok");
