@@ -60,13 +60,7 @@ namespace BalancyShop
         
         Constants.Environment GetEnvironment()
         {
-#if GAME_SERVER
             return Constants.Environment.Production;
-#elif GAME_STAGE
-            return Constants.Environment.Stage;
-#else
-            return Constants.Environment.Development;
-#endif
         }
     }
 }
