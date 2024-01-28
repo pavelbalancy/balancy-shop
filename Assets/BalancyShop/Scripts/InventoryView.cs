@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Balancy;
 using Balancy.Example;
 using Balancy.Models.SmartObjects;
 using UnityEngine;
@@ -8,9 +9,13 @@ namespace BalancyShop
 {
     public class InventoryView : MonoBehaviour
     {
+        private const string ITEM_GOLD = "608";
+        private const string ITEM_GEM = "609";
+        
         [SerializeField] private GameObject slotPrefab;
         [SerializeField] private RectTransform content;
         [SerializeField] private int minInventorySize = 2;
+        [SerializeField] private bool resourcesBag;
 
         private Balancy.Data.SmartObjects.Inventory _inventory;
         private bool _subscribedForTheInventory;
@@ -29,7 +34,7 @@ namespace BalancyShop
             
             Unsubscribe();
             _inventory = inventory;
-            SynchSlotsCount();
+            SynchInventoryData();
             PrepareInitialSlots();
             Subscribe();
         }
@@ -41,10 +46,16 @@ namespace BalancyShop
             FillSlotsWithContent();
         }
 
-        private void SynchSlotsCount()
+        private void SynchInventoryData()
         {
             if (_inventory.GetSlotsCount() < minInventorySize)
                 _inventory.SetInventorySize(minInventorySize);
+
+            if (resourcesBag)
+            {
+                _inventory.SetAcceptableItem(DataEditor.GetModelByUnnyId<Item>(ITEM_GOLD), 0);
+                _inventory.SetAcceptableItem(DataEditor.GetModelByUnnyId<Item>(ITEM_GEM), 1);
+            }
         }
 
         private void CreateEmptySlotViews()
@@ -80,8 +91,8 @@ namespace BalancyShop
             while (_inventorySlots.Count <= index)
                 AddEmptySlotView();
 
-            var itemInstance = _inventory.GetCopyOfItemInSlot(index);
-            _inventorySlots[index].SlotView.UpdateData(itemInstance);
+            var slot = _inventory.GetCopyOfSlot(index);
+            _inventorySlots[index].SlotView.UpdateData(slot);
         }
 
         private void OnDestroy()
