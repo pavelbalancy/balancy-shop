@@ -51,14 +51,14 @@ namespace Balancy.Example
                 {
                     case PriceType.Hard:
                         //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
-                        Balancy.LiveOps.Store.ItemWasPurchased(storeItem, new PaymentInfo
+                        Balancy.LiveOps.Store.ItemWasPurchasedAndValidated(storeItem, new PaymentInfo
                         {
                             Currency = "USD",
                             Price = storeItem.Price.Product.Price,
                             ProductId = storeItem.Price.Product.ProductId,
-                            OrderId = "<TransactionId>",
+                            OrderId = "<TransactionId>" + Guid.NewGuid(),
                             Receipt = "<Receipt>"
-                        }, response =>
+                        }, Constants.Platform.Unknown, response =>
                         {
                             Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                             //TODO give resources from Reward

@@ -45,7 +45,7 @@ namespace BalancyShop
                     Currency = "USD",
                     Price = storeItem.Price.Product.Price,
                     ProductId = storeItem.Price.Product.ProductId,
-                    OrderId = "<transactionId>",
+                    OrderId = "<transactionId>" + Guid.NewGuid(),
                     Receipt = "<receipt>"
                 };
             }
@@ -78,7 +78,7 @@ namespace BalancyShop
                     {
                         case PriceType.Hard:
                             //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
-                            Balancy.LiveOps.Store.ItemWasPurchased(storeItem, GetPaymentInfo(), response =>
+                            Balancy.LiveOps.Store.ItemWasPurchasedAndValidated(storeItem, GetPaymentInfo(), Constants.Platform.Unknown, response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                                 complete?.Invoke();
@@ -154,7 +154,7 @@ namespace BalancyShop
                     {
                         case PriceType.Hard:
                             //TODO You can manage the in-app purchases by yourself, only informing Balancy about the results  
-                            Balancy.LiveOps.GameOffers.OfferWasPurchased(_offerInfo, GetPaymentInfo(), response =>
+                            Balancy.LiveOps.GameOffers.OfferWasPurchasedAndValidated(_offerInfo, GetPaymentInfo(), Constants.Platform.Unknown, response =>
                             {
                                 Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
                                 complete?.Invoke();
