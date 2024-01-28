@@ -11,15 +11,17 @@ namespace BalancyShop
         [SerializeField] private Image image;
         [SerializeField] private TMP_Text count;
 
-        public void UpdateData(ItemInstance itemInstance)
+        public void UpdateData(InventorySlot slot)
         {
             SetVisible(false);
-            (itemInstance?.Item as MyItem)?.Icon.LoadSprite(sprite =>
+            var item = slot.HasItem() ? slot.Item?.Item : slot.AcceptableItem;
+            (item as MyItem)?.Icon.LoadSprite(sprite =>
             {
                 if (sprite != null)
                 {
                     image.sprite = sprite;
-                    count.SetText(itemInstance.Amount.ToString());
+                    var amount = slot.HasItem() ? slot.Item.Amount : 0;
+                    count.SetText(amount.ToString());
                     SetVisible(true);
                 }
             });

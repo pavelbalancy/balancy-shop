@@ -1530,6 +1530,10 @@ PrefabInstance:
       propertyPath: slotPrefab
       value: 
       objectReference: {fileID: 5896695207319728267, guid: a265a6df054654972b8e8ebfb1ea12db, type: 3}
+    - target: {fileID: 4804859173114776730, guid: 5d31537dfc4cf49a3ad3aa3fda6768c0, type: 3}
+      propertyPath: resourcesBag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6158140965562569381, guid: 5d31537dfc4cf49a3ad3aa3fda6768c0, type: 3}
       propertyPath: m_text
       value: Resources
