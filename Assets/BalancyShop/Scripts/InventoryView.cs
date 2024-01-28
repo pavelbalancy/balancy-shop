@@ -29,6 +29,7 @@ namespace BalancyShop
             
             Unsubscribe();
             _inventory = inventory;
+            SynchSlotsCount();
             PrepareInitialSlots();
             Subscribe();
         }
@@ -40,9 +41,15 @@ namespace BalancyShop
             FillSlotsWithContent();
         }
 
+        private void SynchSlotsCount()
+        {
+            if (_inventory.GetSlotsCount() < minInventorySize)
+                _inventory.SetInventorySize(minInventorySize);
+        }
+
         private void CreateEmptySlotViews()
         {
-            var inventorySize = Math.Max(_inventory.GetSlotsCount(), minInventorySize);
+            var inventorySize = _inventory.GetSlotsCount();
             for (int i = 0; i < inventorySize; i++)
                 AddEmptySlotView();
         }
