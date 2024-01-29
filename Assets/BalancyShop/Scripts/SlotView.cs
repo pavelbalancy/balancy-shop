@@ -46,6 +46,7 @@ namespace BalancyShop
             _needToSubscribe = NeedToSubscribe(slot);
             var ui = (slot as MyCustomSlot)?.UIData;
             Init(slot.GetStoreItem(), ui);
+            ShowReward(slot.GetStoreItem()?.Reward, ui);
             ApplySlotBadge(slot, ui);
             buyButton.Init(slot);
         }
@@ -54,6 +55,7 @@ namespace BalancyShop
         {
             _needToSubscribe = true;
             Init(offerInfo.GameOffer.StoreItem, uiStoreItem);
+            ShowReward(offerInfo.Reward, uiStoreItem);
             buyButton.Init(offerInfo, uiStoreItem);
             ApplyOfferBadge(offerInfo, uiStoreItem);
             onGetTimeLeft = offerInfo.GetSecondsLeftBeforeDeactivation;
@@ -96,7 +98,6 @@ namespace BalancyShop
             _uiStoreItem = uiStoreItem;
             ApplyBackground(_uiStoreItem);
             ApplyMainInfo(_storeItem);
-            ShowReward(storeItem, uiStoreItem);
             SubscribeForTimers();
             SetSale();
         }
@@ -199,7 +200,7 @@ namespace BalancyShop
                 saleView?.SetBadge(badgeInfo);
         }
 
-        private void ShowReward(StoreItem storeItem, UIStoreItem uiStoreItem)
+        private void ShowReward(Reward reward, UIStoreItem uiStoreItem)
         {
             if (rewardContent == null)
                 return;
@@ -208,7 +209,6 @@ namespace BalancyShop
             
             PreloadPrefabs(uiStoreItem, () =>
             {
-                var reward = storeItem.Reward;
                 for (var i = 0; i < reward.Items.Length; i++)
                 {
                     var itemWithAmount = reward.Items[i];
