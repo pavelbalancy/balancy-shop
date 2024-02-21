@@ -56,22 +56,16 @@ namespace Balancy.Editor {
                     var remote = remotePath + obj.Path;
                     loadingTextures++;
                     
-                    var cor = Balancy.ObjectsLoader.LoadSpriteFromUrl(remote, obj.GetBorder(), obj.PixelsPerUnit, loadedSprite =>
+                    var path = fileName + obj.Path;
+                    path = path.Replace('/', '-');
+                    
+                    var cor = Balancy.ObjectsLoader.LoadSpriteFromUrl(remote, new ObjectsLoader.SpriteInfo
                     {
-                        var path = fileName + obj.Path;
-                        path = path.Replace('/', '-');
-                        FileHelper.SaveSprite(path, loadedSprite, true);
-                        
-                        var fullPath = FileHelper.GetPathForResourcesFile(path);
-                        AssetDatabase.ImportAsset(fullPath);
-                        var tImporter = AssetImporter.GetAtPath(fullPath) as TextureImporter;
-                        if (tImporter == null)
-                            return;
-
-                        tImporter.textureType = TextureImporterType.Sprite;
-                        tImporter.mipmapEnabled = false;
-                        AssetDatabase.ImportAsset(fullPath);                        
-                        
+                        PixelsPerUnit = obj.PixelsPerUnit,
+                        Border = obj.GetBorder(),
+                        SaveToFilePath = FileHelper.GetPathForResourcesFile(path)
+                    }, loadedSprite =>
+                    {
                         loadingTextures--;
                     });
 
@@ -83,7 +77,6 @@ namespace Balancy.Editor {
             while (loadingTextures > 0)
                 yield return null;
             
-            AssetDatabase.Refresh();
             doneCallback?.Invoke();
         }
 #endif

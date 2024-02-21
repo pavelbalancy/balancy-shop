@@ -61,7 +61,6 @@ namespace Balancy.Example
                         }, response =>
                         {
                             Debug.Log("Purchase " + response.Success + " ? " + response.Error?.Message);
-                            //TODO give resources from Reward
                         });
                         break;
                     case PriceType.Ads:

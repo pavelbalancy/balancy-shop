@@ -18,6 +18,7 @@ namespace BalancyShop
             ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
 
             canvasDemo.Init();
+            var t1 = Time.realtimeSinceStartup;
             Balancy.Main.Init(new AppConfig
             {
                 ApiGameId = apiGameId,
@@ -25,7 +26,8 @@ namespace BalancyShop
                 Environment = GetEnvironment(),                
                 OnInitProgress = progress =>
                 {
-                    Debug.Log($"***=> STATUS {progress.Status}");
+                    var t2 = Time.realtimeSinceStartup;
+                    Debug.Log($"***=> STATUS {progress.Status} in {t2-t1} s");
                     switch (progress.Status)
                     {
                         case BalancyInitStatus.PreInitFromResourcesOrCache:

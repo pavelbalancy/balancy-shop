@@ -7,6 +7,7 @@ using Balancy.Models.BalancyShop;
 using Balancy.Models.LiveOps.Store;
 using Balancy.Models.SmartObjects;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -358,7 +359,11 @@ namespace BalancyShop
             {
                 UIStoreItem uiStoreItem = _buyButtonLogic.GetUIData();
                 if (uiStoreItem?.Button != null)
-                    uiStoreItem.Button.LoadSprite(btnSprite => { buyButtonBack.sprite = btnSprite; });
+                    uiStoreItem.Button.LoadSprite(btnSprite =>
+                    {
+                        if (buyButtonBack != null && !UnityObjectUtility.IsDestroyed(buyButtonBack))
+                            buyButtonBack.sprite = btnSprite;
+                    });
             }
         }
     }

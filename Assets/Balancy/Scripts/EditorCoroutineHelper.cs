@@ -17,6 +17,7 @@ namespace Balancy.Editor
         public static EditorCoroutineHelper Create()
         {
             var obj = new GameObject("temp");
+            obj.hideFlags = HideFlags.HideAndDontSave;
             return obj.AddComponent<EditorCoroutineHelper>();
         }
         
