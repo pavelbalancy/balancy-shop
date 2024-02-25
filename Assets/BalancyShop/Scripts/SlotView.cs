@@ -237,28 +237,32 @@ namespace BalancyShop
 
         private UIItem GetItemInfo(UIStoreItem uiStoreItem, int index)
         {
-            if (uiStoreItem == null || uiStoreItem.Content.Length == 0)
+            if (uiStoreItem?.ContentHolder?.Content == null || uiStoreItem.ContentHolder.Content.Length == 0)
                 return null;
 
-            if (uiStoreItem.Content.Length <= index)
-                return uiStoreItem.Content[uiStoreItem.Content.Length - 1];
-            return uiStoreItem.Content[index];
+            var content = uiStoreItem.ContentHolder.Content;
+
+            if (content.Length <= index)
+                return content[content.Length - 1];
+            return content[index];
         }
 
         private void PreloadPrefabs(UIStoreItem uiStoreItem, Action callback)
         {
-            if (uiStoreItem == null)
+            if (uiStoreItem?.ContentHolder?.Content == null)
             {
                 callback?.Invoke();
                 return;
             }
 
-            var loadingElements = uiStoreItem.Content.Length;
+            var content = uiStoreItem.ContentHolder.Content;
+            
+            var loadingElements = content.Length;
             if (loadingElements == 0)
                 callback?.Invoke();
             else
             {
-                foreach (var uiItem in uiStoreItem.Content)
+                foreach (var uiItem in content)
                 {
                     if (uiItem.Asset != null)
                     {

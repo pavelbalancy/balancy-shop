@@ -11,11 +11,11 @@ namespace Balancy.Models.BalancyShop
 
 
 
-		[JsonProperty("description"), JsonConverter(typeof(LocalizedStringConverter))]
-		public readonly LocalizedString Description;
-
 		[JsonProperty("badgePriority")]
 		public readonly int BadgePriority;
+
+		[JsonProperty("description"), JsonConverter(typeof(LocalizedStringConverter))]
+		public readonly LocalizedString Description;
 
 	}
 #pragma warning restore 649

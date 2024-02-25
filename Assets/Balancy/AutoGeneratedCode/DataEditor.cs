@@ -13,17 +13,17 @@ namespace Balancy
 		{
 			switch (name)
 			{
-				case "SmartObjects.UnnyProfile":
+				case "BalancyShopData":
 				{
-					SmartStorage.LoadSmartObject<Data.SmartObjects.UnnyProfile>(userId, key, responseData =>
+					SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, key, responseData =>
 					{
 						callback?.Invoke(responseData.Data);
 					});
 					break;
 				}
-				case "BalancyShopData":
+				case "SmartObjects.UnnyProfile":
 				{
-					SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, key, responseData =>
+					SmartStorage.LoadSmartObject<Data.SmartObjects.UnnyProfile>(userId, key, responseData =>
 					{
 						callback?.Invoke(responseData.Data);
 					});
@@ -37,51 +37,51 @@ namespace Balancy
 
 		static partial void MoveAllData(string userId)
 		{
-			MigrateSmartObject(userId, "UnnyProfile");
 			MigrateSmartObject(userId, "BalancyShopData");
+			MigrateSmartObject(userId, "UnnyProfile");
 		}
 
 		static partial void TransferAllSmartObjectsFromLocalToCloud(string userId)
 		{
-			TransferSmartObjectFromLocalToCloud<Data.SmartObjects.UnnyProfile>(userId);
 			TransferSmartObjectFromLocalToCloud<Data.BalancyShopData>(userId);
+			TransferSmartObjectFromLocalToCloud<Data.SmartObjects.UnnyProfile>(userId);
 		}
 
 		static partial void ResetAllSmartObjects(string userId)
 		{
-			ResetSmartObject<Data.SmartObjects.UnnyProfile>(userId);
 			ResetSmartObject<Data.BalancyShopData>(userId);
+			ResetSmartObject<Data.SmartObjects.UnnyProfile>(userId);
 		}
 
-		static partial void PreloadAllSmartObjects(string userId)
+		static partial void PreloadAllSmartObjects(string userId, bool skipServerLoading)
 		{
-			SmartStorage.LoadSmartObject<Data.SmartObjects.UnnyProfile>(userId, null, null);
-			SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, null, null);
+			SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, null, skipServerLoading);
 		}
 
 		public static class BalancyShop
 		{
-			public static List<Models.BalancyShop.BadgeInfo> BadgeInfos { get; private set; }
 			public static List<Models.BalancyShop.GameSection> GameSections { get; private set; }
+			public static List<Models.BalancyShop.MyItem> MyItems { get; private set; }
+			public static List<Models.BalancyShop.UIStoreItem> UIStoreItems { get; private set; }
+			public static List<Models.BalancyShop.BadgeInfo> BadgeInfos { get; private set; }
 			public static List<Models.BalancyShop.MyOffer> MyOffers { get; private set; }
 			public static List<Models.BalancyShop.MyStoreItem> MyStoreItems { get; private set; }
-			public static List<Models.BalancyShop.UIStoreItem> UIStoreItems { get; private set; }
-			public static List<Models.BalancyShop.MyItem> MyItems { get; private set; }
 
 			public static void Init()
 			{
-				BadgeInfos = DataManager.ParseList<Models.BalancyShop.BadgeInfo>();
 				GameSections = DataManager.ParseList<Models.BalancyShop.GameSection>();
+				MyItems = DataManager.ParseList<Models.BalancyShop.MyItem>();
+				UIStoreItems = DataManager.ParseList<Models.BalancyShop.UIStoreItem>();
+				BadgeInfos = DataManager.ParseList<Models.BalancyShop.BadgeInfo>();
 				MyOffers = DataManager.ParseList<Models.BalancyShop.MyOffer>();
 				MyStoreItems = DataManager.ParseList<Models.BalancyShop.MyStoreItem>();
-				UIStoreItems = DataManager.ParseList<Models.BalancyShop.UIStoreItem>();
-				MyItems = DataManager.ParseList<Models.BalancyShop.MyItem>();
 			}
 		}
 
 		static partial void PrepareGeneratedData() {
-			ParseDictionary<Models.BalancyShop.Badge>();
 			ParseDictionary<Models.BalancyShop.MyCustomSlot>();
+			ParseDictionary<Models.BalancyShop.Badge>();
+			ParseDictionary<Models.ContentHolder>();
 			BalancyShop.Init();
 			SmartStorage.SetLoadSmartObjectMethod(LoadSmartObject);
 		}

@@ -9,8 +9,19 @@ namespace Balancy.Models.BalancyShop
 	{
 
 		[JsonProperty]
+		private string unnyIdContentHolder;
+		[JsonProperty]
 		private string unnyIdBadge;
 
+
+		// [JsonProperty("content")]
+		// public readonly Models.BalancyShop.UIItem[] Content;
+
+		[JsonIgnore]
+		public Models.ContentHolder ContentHolder => DataEditor.GetModelByUnnyId<Models.ContentHolder>(unnyIdContentHolder);
+
+		[JsonProperty("background")]
+		public readonly UnnyObject Background;
 
 		[JsonProperty("name")]
 		public readonly string Name;
@@ -18,17 +29,11 @@ namespace Balancy.Models.BalancyShop
 		[JsonProperty("asset")]
 		public readonly UnnyAsset Asset;
 
-		[JsonProperty("content")]
-		public readonly Models.BalancyShop.UIItem[] Content;
-
-		[JsonProperty("background")]
-		public readonly UnnyObject Background;
+		[JsonIgnore]
+		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);
 
 		[JsonProperty("button")]
 		public readonly UnnyObject Button;
-
-		[JsonIgnore]
-		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);
 
 	}
 #pragma warning restore 649
