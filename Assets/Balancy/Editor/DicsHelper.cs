@@ -58,14 +58,24 @@ namespace Balancy.Editor {
                     
                     var path = fileName + obj.Path;
                     path = path.Replace('/', '-');
-                    
+
+                    var fullPath = FileHelper.GetPathForResourcesFile(path);
                     var cor = Balancy.ObjectsLoader.LoadSpriteFromUrl(remote, new ObjectsLoader.SpriteInfo
                     {
                         PixelsPerUnit = obj.PixelsPerUnit,
                         Border = obj.GetBorder(),
-                        SaveToFilePath = FileHelper.GetPathForResourcesFile(path)
+                        SaveToFilePath = fullPath
                     }, loadedSprite =>
                     {
+                        AssetDatabase.ImportAsset(fullPath);
+                        TextureImporter textureImporter = AssetImporter.GetAtPath(fullPath) as TextureImporter;
+
+                        if (textureImporter != null)
+                        {
+                            textureImporter.textureType = TextureImporterType.Sprite;
+                            textureImporter.mipmapEnabled = false;
+                            AssetDatabase.ImportAsset(fullPath, ImportAssetOptions.ForceUpdate);
+                        }
                         loadingTextures--;
                     });
 

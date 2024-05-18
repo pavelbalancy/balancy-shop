@@ -80,6 +80,11 @@ namespace Balancy
             Debug.Log("=> OnSegmentUpdated: " + segmentInfo?.Segment?.Name + " ; IsIn = " + segmentInfo?.IsIn);
         }
 
+        public void OnUserProfilesLoaded()
+        {
+            Debug.Log("=> OnUserProfilesLoaded: You can now set default initial properties, before all other managers startup");
+        }
+
         public void OnSmartObjectsInitialized()
         {
             Debug.Log("=> OnSmartObjectsInitialized:  You can now make purchase, request all GameEvents, GameOffers, A/B Tests, etc...");

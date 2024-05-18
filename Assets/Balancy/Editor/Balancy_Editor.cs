@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR && !BALANCY_SERVER
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 
@@ -10,6 +11,8 @@ namespace Balancy.Editor
     {
         public delegate void SynchAddressablesDelegate(string gameId, string token, Constants.Environment environment, Action<string, float> onProgress, Action onStart, Action<string> onComplete);
         public static event SynchAddressablesDelegate SynchAddressablesEvent;
+        
+        private string CACHE_PATH => Application.persistentDataPath + "/Balancy/Models";
 
         [MenuItem("Tools/Balancy/Config", false, -104002)]
         public static void ShowWindow()
@@ -34,6 +37,7 @@ namespace Balancy.Editor
         readonly string[] SERVER_TYPE = {"Development", "Stage", "Production"};
         private Balancy_EditorAuth _authHelper;
         
+        private int _selectedServer;
         private bool _downloading;
         private int _versionNumber;
         private float _downloadingProgress;
@@ -77,11 +81,7 @@ namespace Balancy.Editor
             GUILayout.BeginVertical(EditorStyles.helpBox);
 
             GUILayout.Label("Data Editor");
-            var curServer = AuthHelper.GetUserInfo().SelectedServer;
-
-            var newServer = GUILayout.SelectionGrid(curServer, SERVER_TYPE, SERVER_TYPE.Length, EditorStyles.radioButton);
-            if (newServer != curServer)
-                AuthHelper.GetUserInfo().SetServerType(newServer);
+            _selectedServer = GUILayout.SelectionGrid(_selectedServer, SERVER_TYPE, SERVER_TYPE.Length, EditorStyles.radioButton);
 
             if (_downloading)
             {
@@ -132,10 +132,19 @@ namespace Balancy.Editor
         private void RenderSmartObjects()
         {
             GUILayout.Label("Clear the latest user profile completely");
-            if (GUILayout.Button("Reset"))
+            if (GUILayout.Button("Reset Profile"))
             {
                 ResetAll();
             }
+
+            var directoryExists = Directory.Exists(CACHE_PATH);
+            GUI.enabled = directoryExists;
+            if (GUILayout.Button("Clear Local Cache"))
+            {
+                ClearCache();
+            }
+
+            GUI.enabled = true;
         }
 
         private void StartCodeGeneration()
@@ -144,12 +153,12 @@ namespace Balancy.Editor
             _downloadingProgress = 0.5f;
             _downloadingFileName = "Generating the code...";
 
-            var gameInfo = AuthHelper.GetSelectedGameInfo();
-            var token = AuthHelper.GetAccessToken();
+            var gameInfo = _authHelper.GetSelectedGameInfo();
+            var token = _authHelper.GetAccessToken();
             Balancy_CodeGeneration.StartGeneration(
                 gameInfo.GameId,
                 token,
-                (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer,
+                (Constants.Environment) _selectedServer,
                 () => { _downloading = false; },
                 PluginUtils.CODE_GENERATION_PATH
             );
@@ -163,12 +172,12 @@ namespace Balancy.Editor
             }
             else
             {
-                var gameInfo = AuthHelper.GetSelectedGameInfo();
-                var token = AuthHelper.GetAccessToken();
+                var gameInfo = _authHelper.GetSelectedGameInfo();
+                var token = _authHelper.GetAccessToken();
                 SynchAddressablesEvent(
                     gameInfo.GameId,
                     token,
-                    (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer,
+                    (Constants.Environment) _selectedServer,
                     (fileName, progress) =>
                     {
                         _downloadingFileName = fileName;
@@ -197,12 +206,12 @@ namespace Balancy.Editor
             _downloading = true;
             _downloadingProgress = 0;
 
-            var gameInfo = AuthHelper.GetSelectedGameInfo();
+            var gameInfo = _authHelper.GetSelectedGameInfo();
             var appConfig = new AppConfig
             {
                 ApiGameId = gameInfo.GameId,
                 PublicKey = gameInfo.PublicKey,
-                Environment = (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer
+                Environment = (Constants.Environment) _selectedServer
             };
             
             DicsHelper.LoadDocs(appConfig, responseData =>
@@ -219,9 +228,14 @@ namespace Balancy.Editor
         
         private void ResetAll()
         {
-            var gameInfo = AuthHelper.GetSelectedGameInfo();
-            DataEditor.ResetAllProfiles(gameInfo.GameId, (Constants.Environment) AuthHelper.GetUserInfo().SelectedServer);
+            var gameInfo = _authHelper.GetSelectedGameInfo();
+            DataEditor.ResetAllProfiles(gameInfo.GameId, (Constants.Environment) _selectedServer);
             EditorUtility.DisplayDialog("Success", "The profile was erased.", "Thanks");
+        }
+        
+        private void ClearCache()
+        {
+            Directory.Delete(CACHE_PATH, true);
         }
     }
 }
