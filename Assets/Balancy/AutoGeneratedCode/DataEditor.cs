@@ -58,6 +58,7 @@ namespace Balancy
 			SmartStorage.LoadSmartObject<Data.BalancyShopData>(userId, null, skipServerLoading);
 		}
 
+		public static List<Models.MyGameEvent> MyGameEvents { get; private set; }
 		public static class BalancyShop
 		{
 			public static List<Models.BalancyShop.GameSection> GameSections { get; private set; }
@@ -80,6 +81,7 @@ namespace Balancy
 
 		static partial void PrepareGeneratedData() {
 			ParseDictionary<Models.BalancyShop.MyCustomSlot>();
+			MyGameEvents = DataManager.ParseList<Models.MyGameEvent>();
 			ParseDictionary<Models.BalancyShop.Badge>();
 			ParseDictionary<Models.ContentHolder>();
 			BalancyShop.Init();

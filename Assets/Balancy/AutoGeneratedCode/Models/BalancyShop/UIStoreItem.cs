@@ -14,9 +14,6 @@ namespace Balancy.Models.BalancyShop
 		private string unnyIdBadge;
 
 
-		// [JsonProperty("content")]
-		// public readonly Models.BalancyShop.UIItem[] Content;
-
 		[JsonIgnore]
 		public Models.ContentHolder ContentHolder => DataEditor.GetModelByUnnyId<Models.ContentHolder>(unnyIdContentHolder);
 
