@@ -17,6 +17,11 @@ namespace BalancyShop
         {
             ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
 
+            BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent += () =>
+            {
+                canvasDemo.Refresh();
+            };
+
             canvasDemo.Init();
             var t1 = Time.realtimeSinceStartup;
             Balancy.Main.Init(new AppConfig
@@ -55,7 +60,7 @@ namespace BalancyShop
                     Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion} user={Auth.GetUserId()}");
                     if (!response.Success)
                         Debug.LogError($"ERR {response.Error.Code} - {response.Error.Message}");
-                    canvasDemo.Refresh();
+                    // canvasDemo.Refresh();
                 }
             });
         }
