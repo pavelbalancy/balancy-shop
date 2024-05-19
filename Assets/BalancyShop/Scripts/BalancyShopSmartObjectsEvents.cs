@@ -15,6 +15,9 @@ namespace Balancy
         public static event Action<OfferInfo> onOfferActivated;
         public static event Action<OfferInfo> onOfferDeactivated;
         
+        public static event Action<EventInfo> onEventActivated;
+        public static event Action<EventInfo> onEventDeactivated;
+        
         public void OnSystemProfileConflictAppeared()
         {
             Debug.Log("=> OnSystemProfileConflictAppeared");
@@ -48,11 +51,13 @@ namespace Balancy
         public void OnNewEventActivated(EventInfo eventInfo)
         {
             Debug.Log("=> OnNewEventActivated: " + eventInfo?.GameEvent?.Name);
+            onEventActivated?.Invoke(eventInfo);
         }
 
         public void OnEventDeactivated(EventInfo eventInfo)
         {
             Debug.Log("=> OnEventDeactivated: " + eventInfo?.GameEvent?.Name);
+            onEventDeactivated?.Invoke(eventInfo);
         }
 
         public void OnOfferPurchased(OfferInfo offerInfo)

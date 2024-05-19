@@ -65,7 +65,9 @@
      <Compile Include="Assets/BalancyShop/Scripts/BottomController.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/BalancyShopSmartObjectsEvents.cs" />
      <Compile Include="Assets/BalancyShop/Pack/UIParticle/UIParticleSystem.cs" />
+     <Compile Include="Assets/BalancyShop/Scripts/GameEventsWindow.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/PageView.cs" />
+     <Compile Include="Assets/BalancyShop/Scripts/GameEventInfo.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/BaseWindow.cs" />
      <Folder Include="Assets" />
      <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
