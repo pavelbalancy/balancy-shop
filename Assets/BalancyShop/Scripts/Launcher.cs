@@ -53,6 +53,7 @@ namespace BalancyShop
                 OnContentUpdateCallback = updateResponse =>
                 {
                     Debug.Log("Content Updated " + updateResponse.AffectedDictionaries.Length);
+                    BattlePassExample.Refresh();
                     canvasDemo.Refresh();
                 },
                 OnReadyCallback = response =>
@@ -60,6 +61,7 @@ namespace BalancyShop
                     Debug.Log($"Balancy Init Complete: {response.Success}, deploy version = {response.DeployVersion} user={Auth.GetUserId()}");
                     if (!response.Success)
                         Debug.LogError($"ERR {response.Error.Code} - {response.Error.Message}");
+                    BattlePassExample.Refresh();
                     // canvasDemo.Refresh();
                 }
             });

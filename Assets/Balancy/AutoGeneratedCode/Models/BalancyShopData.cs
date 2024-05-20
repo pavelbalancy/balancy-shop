@@ -10,15 +10,21 @@ namespace Balancy.Data
 
 		[JsonProperty]
 		private Data.BalancyShopGeneralInfo info;
+		[JsonProperty]
+		private Data.BattlePassInfo battlePassInfo;
 
 
 		[JsonIgnore]
 		public Data.BalancyShopGeneralInfo Info => info;
 
+		[JsonIgnore]
+		public Data.BattlePassInfo BattlePassInfo => battlePassInfo;
+
 		protected override void InitParams() {
 			base.InitParams();
 
 			ValidateData(ref info);
+			ValidateData(ref battlePassInfo);
 		}
 
 		public static BalancyShopData Instantiate()
@@ -30,6 +36,7 @@ namespace Balancy.Data
 		{
 			base.AddAllParamsToCache(path, cache);
 			AddCachedItem(path + "Info", Info, null, cache);
+			AddCachedItem(path + "BattlePassInfo", BattlePassInfo, null, cache);
 		}
 	}
 #pragma warning restore 649

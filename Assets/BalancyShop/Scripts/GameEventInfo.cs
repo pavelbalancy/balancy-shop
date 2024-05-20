@@ -24,7 +24,8 @@ namespace BalancyShop
             name.text = gameEvent.Name.Value;
             gameEvent.Icon.LoadSprite(sprite =>
             {
-                icon.sprite = sprite;
+                if (icon != null)
+                    icon.sprite = sprite;
             });
             BalancyTimer.SubscribeForTimer(TIMER_REFRESH, Refresh);
             Refresh();
@@ -37,16 +38,16 @@ namespace BalancyShop
 
         private void Refresh()
         {
+            int timeLeft = 0;
             if (_isActive)
-            {
-                var timeLeft = _gameEvent.GetSecondsLeftBeforeDeactivation();
-                if (timeLeft == int.MaxValue)
-                    timer.text = "Infinite";
-                else
-                    timer.text = GameUtils.FormatTime(timeLeft);
-            }
+                timeLeft = _gameEvent.GetSecondsLeftBeforeDeactivation();
             else
-                timer.text = GameUtils.FormatTime(_gameEvent.GetSecondsBeforeActivation());
+                timeLeft = _gameEvent.GetSecondsBeforeActivation();
+            
+            if (timeLeft == int.MaxValue)
+                timer.text = "Infinite";
+            else
+                timer.text = GameUtils.FormatTime(timeLeft);
         }
     }
 }

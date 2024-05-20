@@ -312,8 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa41ae97704d4b89b3e882c45d3d219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiGameId: 744734c4-7027-11ee-9f8a-0260a0c170f4
-  publicKey: NWM1MWQwOTBhNGYzMDM5NzU5ODY5Nj
+  apiGameId: 0ed4a882-0b82-11ef-a10f-066676c39f77
+  publicKey: ODNmMTI2MWU4OWJmOTViYjZmZjgzZG
   canvasDemo: {fileID: 2711132993270432654}
 --- !u!4 &1542353825
 Transform:
@@ -496,7 +496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3451092601225430085, guid: 818d0e94df31c4fa29a9bfb9b07257e4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 499.99997
+      value: 500.00003
       objectReference: {fileID: 0}
     - target: {fileID: 3451092601225430085, guid: 818d0e94df31c4fa29a9bfb9b07257e4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -764,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5862826007363757424, guid: 818d0e94df31c4fa29a9bfb9b07257e4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 499.99997
+      value: 500.00003
       objectReference: {fileID: 0}
     - target: {fileID: 5862826007363757424, guid: 818d0e94df31c4fa29a9bfb9b07257e4, type: 3}
       propertyPath: m_AnchoredPosition.y

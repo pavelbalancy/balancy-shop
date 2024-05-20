@@ -261,7 +261,8 @@ namespace BalancyShop
         private void SetButtonTextAndIcon()
         {
             StoreItem storeItem = _buyButtonLogic.GetStoreItem();
-            buyIcon?.gameObject.SetActive(false);
+            if (buyIcon != null)
+                buyIcon.gameObject.SetActive(false);
             string buyTextString = "WRONG_PRICE";
             if (storeItem.IsFree())
             {
@@ -287,6 +288,8 @@ namespace BalancyShop
                             {
                                 (firstItem.Item as MyItem)?.Icon.LoadSprite(sprite =>
                                 {
+                                    if (buyIcon == null)
+                                        return;
                                     buyIcon.gameObject.SetActive(true);
                                     buyIcon.sprite = sprite;
                                 });

@@ -14,14 +14,14 @@ namespace Balancy.Models.BalancyShop
 		private string unnyIdUIStoreSlotData;
 
 
+		[JsonProperty("badge")]
+		public readonly Models.LiveOps.Store.SlotType Badge;
+
 		[JsonIgnore]
 		public Models.BalancyShop.UIStoreItem UIPopupData => DataEditor.GetModelByUnnyId<Models.BalancyShop.UIStoreItem>(unnyIdUIPopupData);
 
 		[JsonIgnore]
 		public Models.BalancyShop.UIStoreItem UIStoreSlotData => DataEditor.GetModelByUnnyId<Models.BalancyShop.UIStoreItem>(unnyIdUIStoreSlotData);
-
-		[JsonProperty("badge")]
-		public readonly Models.LiveOps.Store.SlotType Badge;
 
 	}
 #pragma warning restore 649

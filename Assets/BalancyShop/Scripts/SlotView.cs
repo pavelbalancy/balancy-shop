@@ -216,6 +216,8 @@ namespace BalancyShop
 
                     void PrepareItemView(Object prefab)
                     {
+                        if (prefab == null)
+                            return;
                         var storeItemView = rewardContent.AddElement<ItemView>(prefab as GameObject);
                         storeItemView.Init(itemWithAmount, uiItem);
                     }
