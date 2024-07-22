@@ -28,21 +28,39 @@ namespace Balancy.Addressables
         private static readonly Dictionary<string, LoadedObject> _loadedObjects = new Dictionary<string, LoadedObject>(16);
         private static readonly Dictionary<string, List<Action<Object>>> _loadingQueue = new Dictionary<string, List<Action<Object>>>(16);
 
-        public static void GetSprite(UnnyAsset asset, Action<Sprite> callback)
+        public static AsyncLoadHandler GetSprite(UnnyAsset asset, Action<Sprite> callback)
         {
-            GetSprite(asset.Name, callback);
+            return GetSprite(asset.Name, callback);
         }
 
-        public static void GetSprite(string name, Action<Sprite> callback)
+        public static AsyncLoadHandler GetSprite(string name, Action<Sprite> callback)
         {
-            CheckAndPrepareObject<Sprite>(name, o => callback(o as Sprite));
+            var handler = AsyncLoadHandler.CreateHandler();
+            CheckAndPrepareObject<Sprite>(name, o =>
+            {
+                if (handler.GetStatus() == AsyncLoadHandler.Status.Loading)
+                {
+                    handler.Finish();
+                    callback(o as Sprite);
+                }
+            });
+            return handler;
         }
 
-        public static void GetObject(string name, Action<Object> callback)
+        public static AsyncLoadHandler GetObject(string name, Action<Object> callback)
         {
-            CheckAndPrepareObject<Object>(name, callback);
+            var handler = AsyncLoadHandler.CreateHandler();
+            CheckAndPrepareObject<Object>(name, o =>
+            {
+                if (handler.GetStatus() == AsyncLoadHandler.Status.Loading)
+                {
+                    handler.Finish();
+                    callback(o);
+                }
+            });
+            return handler;
         }
-
+        
         private static void CheckAndPrepareObject<T>(string name, Action<Object> callback) where T : Object
         {
             if (_loadedObjects.TryGetValue(name, out var value))
@@ -62,21 +80,21 @@ namespace Balancy.Addressables
 
                     UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<T>(name).Completed += result =>
                     {
+                        Object obj = null;
                         if (result.Status == AsyncOperationStatus.Succeeded)
                         {
                             var loadedObject = new LoadedObject(result.Result);
                             _loadedObjects.Add(name, loadedObject);
-                            var obj = loadedObject.GetObject();
-                            foreach (var action in newQueue)
-                                action(obj);
+                            obj = loadedObject.GetObject();
                         }
                         else
                         {
                             Debug.LogError("Couldn't load asset by name " + name);
-                            foreach (var action in newQueue)
-                                action(null);
                         }
-                        
+
+                        foreach (var action in newQueue)
+                            action(obj);
+
                         _loadingQueue.Remove(name);
                     };
                 }

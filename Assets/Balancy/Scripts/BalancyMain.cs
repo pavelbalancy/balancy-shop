@@ -12,7 +12,6 @@ namespace Balancy
         private static void PrepareOtherPlugins()
         {
             
-			
         }
     }
 }
