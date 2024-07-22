@@ -24,7 +24,8 @@ namespace BalancyShop
             name.text = gameEvent.Name.Value;
             gameEvent.Icon.LoadSprite(sprite =>
             {
-                icon.sprite = sprite;
+                if (!icon.IsDestroyed())
+                    icon.sprite = sprite;
             });
             BalancyTimer.SubscribeForTimer(TIMER_REFRESH, Refresh);
             Refresh();
