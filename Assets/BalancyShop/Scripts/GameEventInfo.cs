@@ -1,5 +1,6 @@
 using Balancy;
 using Balancy.Models;
+using Balancy.Models.SmartObjects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,19 +15,19 @@ namespace BalancyShop
         [SerializeField] private TMP_Text name;
         [SerializeField] private TMP_Text timer;
 
-        private MyGameEvent _gameEvent;
+        private GameEvent _gameEvent;
         private bool _isActive;
 
-        public void Init(MyGameEvent gameEvent, bool isActive)
+        public void Init(GameEvent gameEvent, bool isActive)
         {
             _gameEvent = gameEvent;
             _isActive = isActive;
             name.text = gameEvent.Name.Value;
-            gameEvent.Icon.LoadSprite(sprite =>
-            {
-                if (!icon.IsDestroyed())
-                    icon.sprite = sprite;
-            });
+            // gameEvent.Icon.LoadSprite(sprite =>
+            // {
+            //     if (!icon.IsDestroyed())
+            //         icon.sprite = sprite;
+            // });
             BalancyTimer.SubscribeForTimer(TIMER_REFRESH, Refresh);
             Refresh();
         }

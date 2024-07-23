@@ -114,7 +114,7 @@ namespace BalancyShop
 
             public override UIStoreItem GetUIData()
             {
-                return (_slot as MyCustomSlot)?.UIData;
+                return (_slot as StoreSlotWithUI)?.UIData;
             }
 
             public override string GetHintText()

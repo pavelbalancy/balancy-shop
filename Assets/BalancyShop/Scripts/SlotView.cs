@@ -44,7 +44,7 @@ namespace BalancyShop
         public void Init(Slot slot)
         {
             _needToSubscribe = NeedToSubscribe(slot);
-            var ui = (slot as MyCustomSlot)?.UIData;
+            var ui = (slot as StoreSlotWithUI)?.UIData;
             Init(slot.GetStoreItem(), ui);
             ShowReward(slot.GetStoreItem()?.Reward, ui);
             ApplySlotBadge(slot, ui);

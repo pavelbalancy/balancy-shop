@@ -37,7 +37,7 @@ namespace BalancyShop
             contentActive.RemoveChildren();
             contentScheduled.RemoveChildren();
 
-            var allMyEvents = DataEditor.MyGameEvents;
+            var allMyEvents = DataManager.SmartObjects.AllGameEvents;
             foreach (var myEvent in allMyEvents)
             {
                 bool isActive = IsEventActive(myEvent);

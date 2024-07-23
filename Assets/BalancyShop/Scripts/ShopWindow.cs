@@ -41,7 +41,7 @@ namespace BalancyShop
             Balancy.Data.SmartStorage.LoadSmartObject<BalancyShopData>(response =>
             {
                 var shopData = response.Data;
-                shopData.Info.ShopOpened = gameObject.activeSelf;
+                shopData.ShopInfo.ShopOpened = gameObject.activeSelf;
             });
         }
 

@@ -5,7 +5,7 @@ namespace Balancy.Models.BalancyShop
 {
 #pragma warning disable 649
 
-	public class MyCustomSlot : LiveOps.Store.Slot
+	public class StoreSlotWithUI : LiveOps.Store.Slot
 	{
 
 		[JsonProperty]

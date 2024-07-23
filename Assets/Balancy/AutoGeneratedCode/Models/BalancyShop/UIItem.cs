@@ -11,17 +11,17 @@ namespace Balancy.Models.BalancyShop
 
 
 
-		[JsonProperty("asset")]
-		public readonly UnnyAsset Asset;
-
-		[JsonProperty("text"), JsonConverter(typeof(LocalizedStringConverter))]
-		public readonly LocalizedString Text;
-
 		[JsonProperty("icon")]
 		public readonly UnnyObject Icon;
 
 		[JsonProperty("background")]
 		public readonly UnnyObject Background;
+
+		[JsonProperty("asset")]
+		public readonly UnnyAsset Asset;
+
+		[JsonProperty("text"), JsonConverter(typeof(LocalizedStringConverter))]
+		public readonly LocalizedString Text;
 
 	}
 #pragma warning restore 649

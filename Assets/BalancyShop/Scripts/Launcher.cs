@@ -1,20 +1,26 @@
 using System;
+using System.Collections.Generic;
 using Balancy;
-using Balancy.Example;
-using Balancy.Models.BalancyShop;
 using UnityEngine;
 
 namespace BalancyShop
 {
     public class Launcher : MonoBehaviour
     {
+        private const string GAME_ID = "game_id";
+        private const string PUBLIC_KEY = "public_key";
+        
         [SerializeField] private string apiGameId;
         [SerializeField] private string publicKey;
 
         [SerializeField] private DemoUI canvasDemo;
         
+        private Dictionary<string, string> _urlParams;
+        
         private void Start()
         {
+            _urlParams = ParseUrl();
+            
             ExternalEvents.RegisterSmartObjectsListener(new BalancyShopSmartObjectsEvents());
 
             BalancyShopSmartObjectsEvents.onSmartObjectsInitializedEvent += () =>
@@ -26,7 +32,7 @@ namespace BalancyShop
             var t1 = Time.realtimeSinceStartup;
             Balancy.Main.Init(new AppConfig
             {
-                ApiGameId = apiGameId,
+                ApiGameId = GetGameId(),
                 PublicKey = publicKey,
                 Environment = GetEnvironment(),                
                 OnInitProgress = progress =>
@@ -74,6 +80,35 @@ namespace BalancyShop
 #else
             return Constants.Environment.Development;
 #endif
+        }
+        
+        private string GetGameId()
+        {
+            return _urlParams.TryGetValue(GAME_ID, out var gameId) ? gameId : apiGameId;
+        }
+        
+        private Dictionary<string, string> ParseUrl()
+        {
+            var paramsDict = new Dictionary<string, string>();
+
+            var url = Application.absoluteURL;
+            var splitUrl = url.Split('?');
+            if (splitUrl.Length == 2)
+            {
+                var prms = splitUrl[1];
+                var splitParams = prms.Split('&');
+                foreach (var kvp in splitParams)
+                {
+                    var splitKvp = kvp.Split('=');
+                    if (splitKvp.Length == 2)
+                    {
+                        if (!paramsDict.ContainsKey(splitKvp[0]))
+                            paramsDict.Add(splitKvp[0], splitKvp[1]);
+                    }
+                }
+            }
+
+            return paramsDict;
         }
     }
 }

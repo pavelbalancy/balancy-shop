@@ -9,16 +9,16 @@ namespace Balancy.Data
 	{
 
 		[JsonProperty]
-		private Data.BalancyShopGeneralInfo info;
+		private Data.BalancyShopGeneralInfo shopInfo;
 
 
 		[JsonIgnore]
-		public Data.BalancyShopGeneralInfo Info => info;
+		public Data.BalancyShopGeneralInfo ShopInfo => shopInfo;
 
 		protected override void InitParams() {
 			base.InitParams();
 
-			ValidateData(ref info);
+			ValidateData(ref shopInfo);
 		}
 
 		public static BalancyShopData Instantiate()
@@ -29,7 +29,7 @@ namespace Balancy.Data
 		protected override void AddAllParamsToCache(string path, IInternalStorageCache cache)
 		{
 			base.AddAllParamsToCache(path, cache);
-			AddCachedItem(path + "Info", Info, null, cache);
+			AddCachedItem(path + "ShopInfo", ShopInfo, null, cache);
 		}
 	}
 #pragma warning restore 649

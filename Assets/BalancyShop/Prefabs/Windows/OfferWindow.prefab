@@ -497,7 +497,7 @@ MonoBehaviour:
   transformUpdater: {fileID: 0}
   background: {fileID: 2380549408872004461}
   rewardContent: {fileID: 3128996763700453947}
-  defaultItemView: {fileID: 0}
+  defaultItemView: {fileID: 8318262936373220681, guid: 19a88f73ad3cf45cea5c05eade27d8cd, type: 3}
   timer: {fileID: 8786617108380481454}
   saleView: {fileID: 5586026522664199833}
 --- !u!1 &3811276959018557000
