@@ -59,6 +59,7 @@
      <Compile Include="Assets/BalancyShop/Scripts/InventoryWindow.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/InventoryView.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/MyButton.cs" />
+     <Compile Include="Assets/BalancyShop/Scripts/BattleWindow.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/ControlButton.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/DemoUI.cs" />
      <Compile Include="Assets/BalancyShop/Scripts/ItemView.cs" />
