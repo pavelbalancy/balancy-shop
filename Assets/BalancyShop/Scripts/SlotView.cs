@@ -63,7 +63,7 @@ namespace BalancyShop
         
         private void ApplySlotBadge(Slot slot, UIStoreItem uiStoreItem)
         {
-            if (uiStoreItem.Badge != null)
+            if (uiStoreItem?.Badge != null)
                 saleView?.SetBadge(uiStoreItem.Badge);
             else
                 ApplyBadge(slot.Type);

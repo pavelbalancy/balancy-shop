@@ -63,7 +63,7 @@ namespace BalancyShop
                 
                 foreach (var storeSlot in page.ActiveSlots)
                 {
-                    if (storeSlot is StoreSlotWithUI myCustomSlot)
+                    if (storeSlot is StoreSlotWithUI myCustomSlot && !string.IsNullOrEmpty(myCustomSlot.UIData?.Asset?.Name))
                     {
                         var ui = myCustomSlot.UIData;
                         AssetsLoader.GetObject(ui.Asset.Name, prefab =>
@@ -87,7 +87,7 @@ namespace BalancyShop
             var loadingElements = page.ActiveSlots.Count;
             foreach (var storeSlot in page.ActiveSlots)
             {
-                if (storeSlot is StoreSlotWithUI myCustomSlot)
+                if (storeSlot is StoreSlotWithUI myCustomSlot && !string.IsNullOrEmpty(myCustomSlot.UIData?.Asset?.Name))
                 {
                     var ui = myCustomSlot.UIData;
                     AssetsLoader.GetObject(ui.Asset.Name, prefab =>
