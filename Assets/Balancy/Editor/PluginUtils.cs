@@ -3,13 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using Balancy.Dictionaries;
-using UnityEngine.Events;
 
 namespace Balancy.Editor
 {
@@ -212,8 +210,6 @@ namespace Balancy.Editor
             public bool CanBeRemoved;
             [JsonProperty("download")]
             private DownloadInfo[] Download;
-            [JsonProperty("defines")]
-            private string[] Defines;
             [JsonProperty("dependencies")]
             public PluginInfoBase[] Dependencies;
             [JsonProperty("code")]
@@ -241,48 +237,12 @@ namespace Balancy.Editor
                 onRemovePluginInfo?.Invoke(this);
             }
 
-            private void AddDefines()
-            {
-                if (Defines != null && Defines.Length != 0)
-                {
-                    var group = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
-                    string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
-
-                    var defineSymbols = defines
-                        .Split(';')
-                        .Select(d => d.Trim())
-                        .ToList();
-
-                    string definesToAdd = string.Empty;
-
-                    foreach (var newD in Defines)
-                    {
-                        bool found = defineSymbols.Any(symbol => string.Equals(newD, symbol));
-
-                        if (!found)
-                            definesToAdd += ";" + newD;
-                    }
-
-                    if (!string.IsNullOrEmpty(definesToAdd))
-                    {
-                        try
-                        {
-                            PlayerSettings.SetScriptingDefineSymbolsForGroup(group, defines + definesToAdd);
-                        }
-                        catch (System.Exception e)
-                        {
-                            Debug.LogErrorFormat("Could not add plugin define symbols for build group: {0}, {1}", group, e);
-                        }
-                    }
-                }
-            }
-
             public void InstallPlugin()
             {
-                EditorCoroutineHelper.Execute(InstallAllFiles(AddDefines));
+                EditorCoroutineHelper.Execute(InstallAllFiles());
             }
 
-            IEnumerator InstallAllFiles(UnityAction onComplete)
+            IEnumerator InstallAllFiles()
             {
                 Installing = true;
 
@@ -323,7 +283,6 @@ namespace Balancy.Editor
                 Installing = false;
                 onUpdatePluginInfo?.Invoke(this);
                 AssetDatabase.Refresh();
-                onComplete?.Invoke();
             }
 
             public void UpdatePlugin(PluginInfo localInfo)

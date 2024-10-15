@@ -32,10 +32,10 @@ namespace Balancy.Editor
 		private static Loader m_Loader;
 		private static IEnumerator m_Coroutine;
 		
-		private static void SendRequestToServer(string gameId, string token, Constants.Environment env, Action<string, string> callback)
+		private static void SendRequestToServer(string gameId, string token, int branchId, Action<string, string> callback)
 		{
 			var helper = EditorCoroutineHelper.Create();
-			var req = new EditorUtils.ServerRequest($"{ADMINKA_GENERATOR}/adminka/v1.8/generate?game_id={gameId}&env={(int) env}&version=1", false);
+			var req = new EditorUtils.ServerRequest($"{ADMINKA_GENERATOR}/adminka/v2.0/generate?game_id={gameId}&branch_id={branchId}&version=1", false);
 			req.SetHeader("Content-Type", "application/json")
 				.SetHeader("Authorization", "Bearer " + token);
             
@@ -58,9 +58,9 @@ namespace Balancy.Editor
 			helper.LaunchCoroutine(cor);
 		}
 		
-		public static void StartGeneration(string gameId, string token, Constants.Environment env, Action onComplete, string savePath)
+		public static void StartGeneration(string gameId, string token, int branchId, Action onComplete, string savePath)
 		{
-			SendRequestToServer(gameId, token, env, (data, error) =>
+			SendRequestToServer(gameId, token, branchId, (data, error) =>
 			{
 				AssetDatabase.Refresh();
 				if (!string.IsNullOrEmpty(error))

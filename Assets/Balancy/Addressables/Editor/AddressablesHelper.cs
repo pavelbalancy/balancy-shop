@@ -67,7 +67,7 @@ namespace Balancy.Editor
         {
             public string GameId;
             public string Token;
-            public Constants.Environment Environment;
+            public int BranchId;
             public Action<string, float> OnProgress;
             public Action<string> OnComplete;
             public Action OnStart;
@@ -86,7 +86,7 @@ namespace Balancy.Editor
         private static AddressableAssetSettings _settings;
         private static GameInfo _gameInfo;
 
-        private static void SynchAddressables(string gameId, string token, Constants.Environment environment, Action<string, float> onProgress, Action onStart, Action<string> onComplete)
+        private static void SynchAddressables(string gameId, string token, int branchId, Action<string, float> onProgress, Action onStart, Action<string> onComplete)
         {
             _settings = AddressableAssetSettingsDefaultObject.Settings;
             if (_settings == null)
@@ -107,7 +107,7 @@ namespace Balancy.Editor
             {
                 GameId = gameId,
                 Token = token,
-                Environment = environment,
+                BranchId = branchId,
                 OnProgress = onProgress,
                 OnComplete = onComplete,
                 OnStart =  onStart
@@ -202,7 +202,7 @@ namespace Balancy.Editor
         private static void SendInfoToServer(FullInfo info, GameInfo gameInfo)
         {
             var helper = EditorCoroutineHelper.Create();
-            var req = new EditorUtils.ServerRequest($"/v1.2/check_assets/{gameInfo.GameId}/{(int)gameInfo.Environment}");
+            var req = new EditorUtils.ServerRequest($"/v2.0/check_assets/{gameInfo.GameId}/{gameInfo.BranchId}");
             req.SetHeader("Content-Type", "application/json")
                 .SetHeader("Authorization", "Bearer " + gameInfo.Token)
                 .AddBody("groups", info.groups);
@@ -258,14 +258,14 @@ namespace Balancy.Editor
 
                 gameInfo.OnProgress?.Invoke(fileInfo.name, (float)uploadedFiles / guids.Length);
                 uploadedFiles++;
-                var req = new EditorUtils.ServerRequest("/v1.1/upload_img");
+                var req = new EditorUtils.ServerRequest("/v2.0/upload_img");
                 req.SetHeader("Authorization", "Bearer " + gameInfo.Token)
                     .SetHeader("game-id", gameInfo.GameId)
                     .AddBody("guid", guid)
                     .AddBody("hash", fileInfo.hash)
                     .AddBody("group", fileInfo.group)
                     .AddBody("name", fileInfo.name)
-                    .AddBody("env", (int) gameInfo.Environment)
+                    .AddBody("branch_id", gameInfo.BranchId)
                     .SetMultipart()
                     .AddTexture(newTexture, fileInfo.texturePath, fileInfo.name);
 
@@ -290,7 +290,16 @@ namespace Balancy.Editor
         {
             if (string.IsNullOrEmpty(fileInfo.texturePath))
             {
-                Debug.LogError("No image found for guid " + fileInfo.guid);
+                // check only for image type assets
+                switch (fileInfo.link)
+                {
+                    case Texture2D:
+                    case Sprite:
+                    case Texture:
+                        Debug.LogError("No image found for guid " + fileInfo.guid);
+                        return null;
+                }
+
                 return null;
             }
 

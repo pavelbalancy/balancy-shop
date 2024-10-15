@@ -12,22 +12,17 @@ namespace Balancy.Example
         
         [SerializeField] private GameObject pagePrefab;
 
-        private SmartConfig _smartConfig;
+#if !BALANCY_SERVER
 
-        public void Init(SmartConfig smartConfig)
+        public void Init(GameStoreBase smartConfig)
         {
-            _smartConfig = smartConfig;
-            _smartConfig.OnStoreUpdatedEvent += Refresh;
-            Refresh(_smartConfig);
+            GameStoreBase.OnStoreUpdatedEvent += Refresh;
+            Refresh(smartConfig);
         }
 
         private void OnDestroy()
         {
-            if (_smartConfig != null)
-            {
-                _smartConfig.OnStoreUpdatedEvent -= Refresh;
-                _smartConfig = null;
-            }
+            GameStoreBase.OnStoreUpdatedEvent -= Refresh;
         }
 
         private void Refresh(GameStoreBase smartConfig)
@@ -43,5 +38,6 @@ namespace Balancy.Example
                 storeTabButton.Init(smartConfig, page);
             }
         }
+#endif
     }
 }

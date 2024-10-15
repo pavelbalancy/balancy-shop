@@ -54,7 +54,7 @@ namespace BalancyShop
         {
             if (_smartConfig != null)
             {
-                _smartConfig.OnStoreUpdatedEvent -= Refresh;
+                GameStoreBase.OnStoreUpdatedEvent -= Refresh;
                 _smartConfig = null;
             }
         }
@@ -67,7 +67,7 @@ namespace BalancyShop
             {
                 CleanUp();
                 _smartConfig = smartConfig;
-                _smartConfig.OnStoreUpdatedEvent += Refresh;
+                GameStoreBase.OnStoreUpdatedEvent += Refresh;
             }
             
             content.RemoveChildren();

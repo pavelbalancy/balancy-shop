@@ -17,7 +17,6 @@ namespace Balancy.Example
         {
             FindTransform();
             Calculate();
-            Coroutines.WaitOneFrame(Calculate);
         }
 
         private void Calculate()
