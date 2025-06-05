@@ -13,7 +13,7 @@ namespace Balancy.Editor
         [UnityEditor.Callbacks.DidReloadScripts]
         public static void OnScriptsReloaded()
         {
-            AddBalancySymbols(BalancyDefine);
+            // AddBalancySymbols(BalancyDefine);
             CheckBalancyMainClass();
         }
         

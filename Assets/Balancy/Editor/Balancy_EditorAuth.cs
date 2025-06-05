@@ -158,6 +158,9 @@ namespace Balancy.Editor
             [JsonProperty("selectedBranches")]
             public Dictionary<string, int> SelectedBranches { get; private set; }
             
+            [JsonProperty("privateKey")]
+            public string PrivateKey;
+            
             public void Save()
             {
                 Balancy.Dictionaries.FileHelper.CheckFolder(USER_INFO_FOLDER);
@@ -437,6 +440,20 @@ namespace Balancy.Editor
                 }
             });
             helper.LaunchCoroutine(cor);
+        }
+
+        public string GetPrivateKey()
+        {
+            return _userInfo?.PrivateKey;
+        }
+        
+        public void SetPrivateKey(string privateKey)
+        {
+            if (_userInfo != null)
+            {
+                _userInfo.PrivateKey = privateKey;
+                _userInfo.Save();
+            }
         }
         
         public GameInfo GetSelectedGameInfo()

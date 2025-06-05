@@ -14,6 +14,8 @@ namespace Balancy
         static partial void PreloadAllSmartObjects(string userId, bool skipServerLoading);
         static partial void PreloadAllSmartObjects(string userId);
         static partial void ResetAllSmartObjects(string userId);
+        
+        public static event Action OnModelsWereRefreshed;
 
         public static void Init()
         {
@@ -28,6 +30,8 @@ namespace Balancy
             DataManager.Init();
             PrepareGeneratedData();
             CheckProfilesForTheMigration();
+            
+            OnModelsWereRefreshed?.Invoke();
         }
 
         protected static DataManager.ParseWrapper<T> ParseDictionary<T>() where T : BaseModel
@@ -79,6 +83,7 @@ namespace Balancy
         public static void ResetAllProfiles(string userId, Action callback)
         {
             ResetAllSmartObjects(userId);
+            Balancy.Data.SmartObjects.GeneralInfo.ProfileWasReset(userId);
             
             InvokeCallbackWhenResetsAreComplete(() =>
             {

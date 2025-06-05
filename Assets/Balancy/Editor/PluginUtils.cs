@@ -135,11 +135,20 @@ namespace Balancy.Editor
         {
             [JsonProperty("name")]
             public string Name;
+            [JsonProperty("displayName")]
+            public string DisplayName;
             [JsonProperty("version")]
             private string versionString;
 
             [JsonIgnore]
             private PluginVersion _version;
+
+            public string GetDisplayName()
+            {
+                if (!string.IsNullOrEmpty(DisplayName))
+                    return DisplayName;
+                return Name;
+            }
 
             [JsonIgnore]
             public PluginVersion Version

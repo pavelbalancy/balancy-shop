@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Balancy.API;
 using UnityEditor;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace Balancy.Editor
         private static readonly GUIStyle LABEL_BOLD = new GUIStyle(GUI.skin.GetStyle("label")) {fontStyle = FontStyle.Bold};
         private static readonly GUIStyle LABEL_WRAP = new GUIStyle(GUI.skin.GetStyle("label")) {wordWrap = true};
 
-        private static readonly GUILayoutOption LAYOUT_NAME = GUILayout.Width(100);
+        private static readonly GUILayoutOption LAYOUT_NAME = GUILayout.Width(250);
         private static readonly GUILayoutOption LAYOUT_VERSION = GUILayout.Width(50);
         private static readonly GUILayoutOption LAYOUT_BUTTON = GUILayout.Width(100);
         private static readonly GUILayoutOption LAYOUT_BUTTON_REFRESH = GUILayout.Width(30);
@@ -43,7 +44,7 @@ namespace Balancy.Editor
             GUILayout.BeginHorizontal(EditorStyles.helpBox);
             GUILayout.Label(new GUIContent
             {
-                text = plugin.Name,
+                text = plugin.GetDisplayName(),
                 tooltip = plugin.Description
             }, LABEL_BOLD, LAYOUT_NAME);
             GUILayout.Label(localVersion == null ? string.Empty : "v" + localVersion.ToString(), LAYOUT_VERSION);
@@ -360,7 +361,7 @@ namespace Balancy.Editor
 
         private async void LoadRemoteConfig()
         {
-            var result = await Loader.TryLoadFile(PluginUtils.PLUGINS_ADDRESS_REMOTE, _config);
+            var result = await Loader.TryLoadFile(PluginUtils.PLUGINS_ADDRESS_REMOTE, _config, RequestType.DEV);
             if (string.IsNullOrEmpty(result))
             {
                 EditorUtility.DisplayDialog("Error", "Something went wrong", "Ok");

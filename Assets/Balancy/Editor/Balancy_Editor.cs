@@ -10,7 +10,9 @@ namespace Balancy.Editor
     public class Balancy_Editor : EditorWindow
     {
         public delegate void SynchAddressablesDelegate(string gameId, string token, int branchId, Action<string, float> onProgress, Action onStart, Action<string> onComplete);
+        public delegate void SynchAddressablesDelegateNew(Balancy_EditorAuth editorAuth, string gameId, string token, int branchId, string branchName, Action<string, float> onProgress, Action onStart, Action<string> onComplete);
         public static event SynchAddressablesDelegate SynchAddressablesEvent;
+        public static event SynchAddressablesDelegateNew SynchAddressablesEventNew;
         
         private string CACHE_PATH => Application.persistentDataPath + "/Balancy/Models";
 
@@ -95,7 +97,13 @@ namespace Balancy.Editor
                 if (GUILayout.Button("Download Data"))
                     StartDownloading();
                 
-                if (GUILayout.Button("Synch Addressables"))
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                
+                if (GUILayout.Button("Addressables (NEW)"))
+                    StartSynchingAddressablesNew();
+                
+                if (GUILayout.Button("Addressables (Legacy)"))
                     StartSynchingAddressables();
                 
                 GUILayout.EndHorizontal();
@@ -150,12 +158,53 @@ namespace Balancy.Editor
                 PluginUtils.CODE_GENERATION_PATH
             );
         }
+        
+        private void StartSynchingAddressablesNew()
+        {
+            if (SynchAddressablesEventNew == null)
+            {
+                EditorUtility.DisplayDialog("Warning", "Addressables (NEW) Plugin is not installed. Please install it below and don't forget to import Unity's Addressables from Package Manager", "Got it");
+            }
+            else
+            {
+                var gameInfo = _authHelper.GetSelectedGameInfo();
+                var branchId = gameInfo.GetSelectedBranchId();
+                var branchName = gameInfo.GetSelectedBranch().Name;
+                var token = _authHelper.GetAccessToken();
+                SynchAddressablesEventNew(
+                    AuthHelper,
+                    gameInfo.GameId,
+                    token,
+                    branchId,
+                    branchName,
+                    (fileName, progress) =>
+                    {
+                        _downloadingFileName = fileName;
+                        _downloadingProgress = progress;
+                    },
+                    () =>
+                    {
+                        _downloading = true;
+                        _downloadingProgress = 0f;
+                        _downloadingFileName = "Synchronizing addressables...";  
+                    },
+                    (error) =>
+                    {
+                        _downloading = false;
+                        if (!string.IsNullOrEmpty(error))
+                            EditorUtility.DisplayDialog("Error", error, "Ok");
+                        else
+                            EditorUtility.DisplayDialog("Success", "Addressables are now synched. Please ensure to DEPLOY the game in Balancy dashboard to release the new bundles.", "Ok");
+                    }
+                );
+            }
+        }
 
         private void StartSynchingAddressables()
         {
             if (SynchAddressablesEvent == null)
             {
-                EditorUtility.DisplayDialog("Warning", "Addressables Plugin is not installed. Please install it below and don't forget to import Unity's Addressables from Package Manager", "Got it");
+                EditorUtility.DisplayDialog("Warning", "Addressables (Legacy) Plugin is not installed. Please install it below and don't forget to import Unity's Addressables from Package Manager", "Got it");
             }
             else
             {

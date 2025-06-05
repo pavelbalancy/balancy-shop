@@ -12,7 +12,7 @@ namespace Balancy.Models.BalancyShop
 
 
 		[JsonProperty("asset")]
-		public readonly UnnyAsset Asset;
+		public readonly UnnyObject Asset;
 
 		[JsonProperty("text"), JsonConverter(typeof(LocalizedStringConverter))]
 		public readonly LocalizedString Text;

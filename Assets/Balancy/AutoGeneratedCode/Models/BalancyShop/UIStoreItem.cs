@@ -24,7 +24,7 @@ namespace Balancy.Models.BalancyShop
 		public readonly string Name;
 
 		[JsonProperty("asset")]
-		public readonly UnnyAsset Asset;
+		public readonly UnnyObject Asset;
 
 		[JsonIgnore]
 		public Models.BalancyShop.Badge Badge => DataEditor.GetModelByUnnyId<Models.BalancyShop.Badge>(unnyIdBadge);

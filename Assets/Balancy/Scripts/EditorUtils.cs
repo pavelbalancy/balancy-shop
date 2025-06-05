@@ -30,6 +30,8 @@ namespace Balancy
             public Dictionary<string, object> Body { get; }
             public bool IsMultipart { get; set; }
             public List<UnityUtils.ImageInfo> Images { get; private set;}
+            public string ImageKey { get; private set;}
+            public List<UnityUtils.FileInfo> Files { get; private set;}
 
             public string Method;
 
@@ -69,11 +71,22 @@ namespace Balancy
                 return this;
             }
 
-            public ServerRequest AddTexture(Texture2D img, string name, string prefabName)
+            public ServerRequest AddTexture(Texture2D img, string name, string prefabName, string imageKey = "image")
             {
                 if (Images == null)
                     Images = new List<UnityUtils.ImageInfo>();
                 Images.Add(new UnityUtils.ImageInfo(img, name, prefabName));
+
+                ImageKey = imageKey;
+
+                return this;
+            }
+            
+            public ServerRequest AddFile(string name, string path)
+            {
+                if (Files == null)
+                    Files = new List<UnityUtils.FileInfo>();
+                Files.Add(new UnityUtils.FileInfo(name, path));
 
                 return this;
             }
